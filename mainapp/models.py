@@ -23,6 +23,7 @@ class Job(models.Model):
 	end_time = models.DateTimeField('time ended', null=True)
 	status = models.CharField(max_length=20)
 	description = models.CharField(max_length=250, null=True)
+	spark_job_id = models.CharField(max_length=100)
 	owner = models.ForeignKey('auth.User', related_name="jobs")
 
 	def __unicode__(self):
