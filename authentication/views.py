@@ -12,7 +12,7 @@ from rest_framework import status, permissions
 from authentication.serializers import UserSerializer1
 
 
-class UserView(APIView):
+class UserList(APIView):
 	permission_classes = (permissions.IsAdminUser,)
 
 	def get(self, request, format=None):

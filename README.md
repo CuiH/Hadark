@@ -1,7 +1,7 @@
 ### dependencies:
 ```
 pip install django
-pip install djangorestframwork
+pip install djangorestframework
 pip install python-mysql
 ```
 
