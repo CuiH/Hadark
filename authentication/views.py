@@ -18,21 +18,31 @@ class UserList(APIView):
 	def get(self, request, format=None):
 		users = User.objects.all()
 		serializer = UserSerializer1(users, many=True)
-		return Response(serializer.data,
+		return Response({"result": "success", "message": "none", "data": serializer.data},
 			headers={"Access-Control-Allow-Origin": "*"})
 
 
 class LogonView(APIView):
 	permission_classes = (permissions.AllowAny,)
 
-	def post(self, request, format=None):
-		now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
+	def get_object(self, username):
+		try:
+			return User.objects.get(username=username)
+		except User.DoesNotExist:
+			return None
 
+	def post(self, request, format=None):
+		if self.get_object(request.data["username"]) is not None:
+			return Response({"result": "fail", "message": "this username has been used"}, 
+				status=status.HTTP_400_BAD_REQUEST,
+				headers={"Access-Control-Allow-Origin": "*"})
+
+		now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
 		user = User.objects.create_user(request.data["username"], "", request.data["password"])
 		user.last_login = now_time;
 		user.save()
-
-		return Response({"result": "success", "message": "none"}, 
+		serializer = UserSerializer1(user)
+		return Response({"result": "success", "message": "none", "data": serializer.data}, 
 			headers={"Access-Control-Allow-Origin": "*"})
 
 
@@ -48,8 +58,8 @@ class LoginView(APIView):
 				now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
 				user.last_login = now_time
 				user.save()
-
-				return Response({"result": "success", "message": "none"}, 
+				serializer = UserSerializer1(user)
+				return Response({"result": "success", "message": "none", "data": serializer.data}, 
 					headers={"Access-Control-Allow-Origin": "*"})
 			else:
 				return Response({"result": "fail", "message": "not active"}, 

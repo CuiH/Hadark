@@ -6,4 +6,5 @@ urlpatterns = [
 	url(r'^job/(?P<pk>[0-9]+)$', views.JobDetail.as_view(), name="job"),
 	url(r'^documents$', views.DocumentList.as_view(), name="all_document"),
 	url(r'^document/(?P<pk>[0-9]+)$', views.DocumentDetail.as_view(), name="document"),
+	url(r'^files/(?P<filename>[^/]+)$', views.FileView.as_view(), name="upload_file"),
 ]

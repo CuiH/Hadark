@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mainapp.models import Document, Job, CodeFile, Result
+from mainapp.models import Document, Job, Result
 
 
 class DocumentSerializer1(serializers.ModelSerializer):
@@ -45,7 +45,7 @@ class JobSerializer2(serializers.ModelSerializer):
 
 	class Meta:
 		model = Job
-		fields = ('id', 'name', 'owner', 'start_time', 'end_time', 'status', 'description', 'spark_job_id')
+		fields = ('id', 'name', 'owner', 'start_time', 'end_time', 'status', 'description', 'paramter', 'spark_job_id')
 
 
 class CodeFileSerializer1(serializers.ModelSerializer):

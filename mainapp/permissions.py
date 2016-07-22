@@ -11,16 +11,16 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 
 def checkPermissionAndExistence(obj, current_user):
+	custom_headers = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Authorization"}
+
 	if obj is None:
 		return Response({"result": "fail", "message": "no such object"}, 
-			headers={"Access-Control-Allow-Origin": "*"},
+			headers=custom_headers,
 			status=status.HTTP_400_BAD_REQUEST)
 
 	if obj.owner != current_user:
-		print current_user.id
-		print obj.owner.username
 		return Response({"result": "fail", "message": "you have no access to this object"}, 
-			headers={"Access-Control-Allow-Origin": "*"},
+			headers=custom_headers,
 			status=status.HTTP_403_FORBIDDEN)
 
 	return None
