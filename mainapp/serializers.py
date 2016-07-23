@@ -1,29 +1,56 @@
-from django.contrib.auth.models import User
-
 from rest_framework import serializers
 
-from mainapp.models import Document, Job, CodeFile, Result
+from mainapp.models import Document, Job, Result
 
 
-class UserSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = User
-		fields = ('id', 'username')
-
-
-class DocumentSerializer(serializers.ModelSerializer):
+class DocumentSerializer1(serializers.ModelSerializer):
+	"""
+	used in viewing a document
+	"""
 	class Meta:
 		model = Document
 		fields = ('id', 'name', 'upload_time', 'size', 'description')
 
 
-class JobSerializer(serializers.ModelSerializer):
+class DocumentSerializer2(serializers.ModelSerializer):
+	"""
+	used in adding/updating a document
+	"""
+	owner = serializers.ReadOnlyField(source='owner.username')
+	upload_time = serializers.ReadOnlyField()
+	size = serializers.ReadOnlyField()
+
 	class Meta:
 		model = Document
+		fields = ('id', 'name', 'upload_time', 'size', 'description', 'owner')
+
+
+class JobSerializer1(serializers.ModelSerializer):
+	"""
+	used in viewing a job
+	"""
+	class Meta:
+		model = Job
 		fields = ('id', 'name', 'start_time', 'end_time', 'status', 'description')
 
 
-class CodeFileSerializer(serializers.ModelSerializer):
+class JobSerializer2(serializers.ModelSerializer):
+	"""
+	used in adding a job
+	"""
+	owner = serializers.ReadOnlyField(source='owner.username')
+	status = serializers.ReadOnlyField()
+	start_time = serializers.ReadOnlyField()
+	spark_job_id = serializers.ReadOnlyField()
+
+	class Meta:
+		model = Job
+		fields = ('id', 'name', 'owner', 'start_time', 'end_time', 'status', 'description', 'paramter', 'spark_job_id')
+
+
+class CodeFileSerializer1(serializers.ModelSerializer):
+	job = serializers.ReadOnlyField(source='owner.username')
+
 	class Meta:
 		model = Document
 		fields = ('id', 'name', 'uploaded_time')

@@ -23,7 +23,10 @@ class Job(models.Model):
 	end_time = models.DateTimeField('time ended', null=True)
 	status = models.CharField(max_length=20)
 	description = models.CharField(max_length=250, null=True)
+	spark_job_id = models.CharField(max_length=100)
 	owner = models.ForeignKey('auth.User', related_name="jobs")
+	parameters = models.CharField(max_length=230, null=True)
+	code_files = models.ManyToManyField(Document)
 
 	def __unicode__(self):
 		return self.name
@@ -32,16 +35,16 @@ class Job(models.Model):
 		return self.name
 
 
-class CodeFile(models.Model):
-	name = models.CharField(max_length=100)
-	uploaded_time = models.DateTimeField('time uploaded')
-	job = models.ForeignKey(Job, related_name="files")
+# class CodeFile(models.Model):
+# 	name = models.CharField(max_length=100)
+# 	uploaded_time = models.DateTimeField('time uploaded')
+# 	job = models.ForeignKey(Job, related_name="files")
 
-	def __unicode__(self):
-		return self.name
+# 	def __unicode__(self):
+# 		return self.name
 
-	def __str__(self):
-		return self.name
+# 	def __str__(self):
+# 		return self.name
 
 
 class Result(models.Model):
