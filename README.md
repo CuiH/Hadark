@@ -3,6 +3,7 @@
 pip install django
 pip install djangorestframework
 pip install python-mysql
+pip install django-cors-headers
 ```
 
 ---

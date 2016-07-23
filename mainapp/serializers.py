@@ -29,9 +29,11 @@ class JobSerializer1(serializers.ModelSerializer):
 	"""
 	used in viewing a job
 	"""
+	code_files = DocumentSerializer1(read_only=True, many=True)
+
 	class Meta:
 		model = Job
-		fields = ('id', 'name', 'start_time', 'end_time', 'status', 'description')
+		fields = ('id', 'name', 'start_time', 'end_time', 'status', 'description', 'parameters', 'code_files')
 
 
 class JobSerializer2(serializers.ModelSerializer):
@@ -42,10 +44,19 @@ class JobSerializer2(serializers.ModelSerializer):
 	status = serializers.ReadOnlyField()
 	start_time = serializers.ReadOnlyField()
 	spark_job_id = serializers.ReadOnlyField()
+	code_files = serializers.IntegerField()
 
 	class Meta:
 		model = Job
-		fields = ('id', 'name', 'owner', 'start_time', 'end_time', 'status', 'description', 'paramter', 'spark_job_id')
+		fields = ('id', 'name', 'owner', 'start_time', 'end_time', 'status', 'description', 'parameters', 'spark_job_id', 'code_files')
+
+	def create(self, validated_data):
+		doc_id = validated_data.pop("code_files")
+		doc = Document.objects.get(pk=doc_id)
+		job = Job.objects.create(**validated_data)
+		job.code_files.add(doc)
+		return job
+
 
 
 class CodeFileSerializer1(serializers.ModelSerializer):
