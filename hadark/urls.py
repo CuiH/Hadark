@@ -20,5 +20,6 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^api/', include('mainapp.urls', namespace="api")),
 	url(r'^authentication/', include('authentication.urls', namespace="authentication")),
+	url(r'^files/', include('file_management.urls', namespace="files")),
 	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

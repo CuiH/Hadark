@@ -35,18 +35,6 @@ class Job(models.Model):
 		return self.name
 
 
-# class CodeFile(models.Model):
-# 	name = models.CharField(max_length=100)
-# 	uploaded_time = models.DateTimeField('time uploaded')
-# 	job = models.ForeignKey(Job, related_name="files")
-
-# 	def __unicode__(self):
-# 		return self.name
-
-# 	def __str__(self):
-# 		return self.name
-
-
 class Result(models.Model):
 	path = models.CharField(max_length=100)
 	job = models.ForeignKey(Job, related_name="results")
