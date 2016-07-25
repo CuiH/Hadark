@@ -13,7 +13,7 @@ class IsOwner(permissions.BasePermission):
 def checkPermissionAndExistence(obj, current_user):
 	custom_headers = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Authorization"}
 
-	print current_user
+	print(current_user)
 	if obj.owner != current_user:
 		return Response({"result": "fail", "message": "you have no access to this object(s)"}, 
 			headers=custom_headers,

@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import requests
 import json
 
@@ -9,6 +8,11 @@ Currently, no permission control is included in this module.
 """
 
 base_url = 'http://172.18.231.84:50070/webhdfs/v1'
+
+def delete_content(file_path):
+    with open(file_path, "w"):
+        pass
+
 
 def upload_file(username, local_file, remote_url):
     """
@@ -108,10 +112,10 @@ def test():
     # open_file(user, '/user/vinzor/test2')
     # rename_object(user, '/user/vinzor/helloworld', '/user/vinzor/helloworld-new')
     # get_status(user, '/user/vinzor/helloworld-new')
-    # get_list(user, '/user/vinzor/')
+    get_list(user, '/user/vinzor/')
     # delete_object(user, '/user/vinzor/input')
     # make_dir(user, '/user/vinzor/test1')
-    upload_file(user, './apps.py', '/user/vinzor/apps.py')
+    # upload_file(user, './apps.py', '/user/vinzor/apps.py')  
 
 if __name__ == '__main__':
     test()

@@ -16,7 +16,7 @@ class FileView(APIView):
 
 	parser_classes =  (parsers.MultiPartParser,)
 	permission_classes = (IsAuthenticated,)
-	
+
 	def post(self, request, filename, format=None):
 		file_obj = request.data['file']
 		path = "/home/cuih/ttt/"

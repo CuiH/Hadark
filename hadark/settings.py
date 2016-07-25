@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'mainapp',
-    'authentication',
+    # 'authentication',
     'file_management',
+    'fs',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -113,9 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # rest framework
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-    ),
+    ############################################################
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (                      #
+    #     'rest_framework.authentication.BasicAuthentication', #
+    # ),                                                       #
+    ############################################################
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
@@ -154,3 +157,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
