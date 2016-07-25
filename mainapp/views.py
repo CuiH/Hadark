@@ -37,7 +37,6 @@ class DocumentList(APIView):
 				status=status.HTTP_400_BAD_REQUEST)
 
 		# check file
-		print request.data["file"]
 		if not isinstance(request.data["file"], File):
 			return Response({"detail": "please upload a file"}, 
 				status=status.HTTP_400_BAD_REQUEST)
@@ -48,13 +47,12 @@ class DocumentList(APIView):
 		if not os.path.exists(path):
 			os.makedirs(path)
 		file_path = path + request.data["name"]
-		des = open(file_path, 'wb+')
-		if file_obj.multiple_chunks():
-			for chunk in file_obj.chunks():
-				des.write(chunk)
-		else:
-			des.write(file_obj.read())
-		des.close()
+		sf = self.save_file(file_path, file_obj)
+		try:
+			while True:
+				sf.next()
+		except StopIteration:
+			pass
 
 		# upload file to hadoop
 
@@ -68,6 +66,17 @@ class DocumentList(APIView):
 		now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
 		serializer.save(owner=now_user, upload_time=now_time, size=file_size)
 
+	def save_file(self, file_path, file_obj):
+		des = open(file_path, 'wb+')
+		if file_obj.multiple_chunks():
+			for chunk in file_obj.chunks():
+				des.write(chunk)
+				yield
+		else:
+			des.write(file_obj.read())
+			yield
+
+		des.close()
 
 class DocumentDetail(APIView):
 	"""
@@ -98,6 +107,9 @@ class DocumentDetail(APIView):
 	def delete(self, request, pk, format=None):
 		document = self.get_object(pk)
 		if document is not None:
+			# delete from hadoop
+
+			# delete from db
 			document.delete()
 
 			return Response({"detail": "none"})
@@ -115,25 +127,45 @@ class JobList(APIView):
 
 	def get(self, request, format=None):
 		jobs = Job.objects.filter(owner=request.user)
+
+		# update from spark
+		for job in jobs:
+			if job.status == "running":
+				pass
+
 		serializer = JobSerializer1(jobs, many=True)
 
 		return Response({"detail": serializer.data})
 
 	def post(self, request, format=None):
-		# doc = Document.objects.get(pk=request.data["code_files"])
 		serializer = JobSerializer2(data=request.data)
-		if serializer.is_valid():
-			new_job = self.perform_create(serializer)
+		if not serializer.is_valid():
+			return Response({"detail": serializer.errors},
+				status=status.HTTP_400_BAD_REQUEST)
 
-			return Response({"detail": JobSerializer1(new_job).data})
+		# check ducument's exsistence
+		try:
+			document = Document.objects.get(pk=request.data["code_files"])
+			# check owner
+			if document.owner is not request.user:
+				return Response({"detail": "you have no access to this documet"},
+				status=status.HTTP_403_FORBIDDEN)
+		except Document.DoesNotExist:
+			return Response({"detail": "invalid document id"},
+				status=status.HTTP_400_BAD_REQUEST)
 
-		return Response({"detail": serializer.errors},
-			status=status.HTTP_400_BAD_REQUEST)
+		# start a spark job
+
+		# insert into db
+		new_job = self.perform_create(serializer)
+
+		return Response({"detail": JobSerializer1(new_job).data})
 
 	def perform_create(self, serializer):
 		now_user = self.request.user
 		now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
 		job = serializer.save(owner=now_user, start_time=now_time, status="running", spark_job_id=-1)
+		
 		return job
 
 
@@ -156,6 +188,34 @@ class JobDetail(APIView):
 	def get(self, request, pk, format=None):
 		job = self.get_object(pk)
 		if job is not None:
+			# update from spark
+			if job.status == "running":
+				pass
+
+			serializer = JobSerializer1(job)
+
+			return Response({"detail": serializer.data})
+
+		return Response({"detail": "no such job"},
+			status=status.HTTP_404_NOT_FOUND)
+
+	def put(self, request, pk, format=None):
+		''' abort a job '''
+		job = self.get_object(pk)
+		if job is not None:
+			# check status
+			if job.status == "aborted" or job.status == "finished":
+				return Response({"detail": "invalid action"},
+					status=status.HTTP_400_BAD_REQUEST)
+
+			# abort in spark
+
+			# update db
+			job.status = "aborted"
+			now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
+			job.end_time = now_time
+			job.save()
+
 			serializer = JobSerializer1(job)
 
 			return Response({"detail": serializer.data})
@@ -166,6 +226,9 @@ class JobDetail(APIView):
 	def delete(self, request, pk, format=None):
 		job = self.get_object(pk)
 		if job is not None:
+			# delete from spark
+
+			# delete from db
 			job.delete()
 
 			return Response({"detail": "none"})
