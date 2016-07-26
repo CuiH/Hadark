@@ -9,6 +9,7 @@ class Document(models.Model):
 	size = models.BigIntegerField(default=0)
 	description = models.CharField(max_length=250, null=True)
 	owner = models.ForeignKey('auth.User', related_name="documents")
+	status = models.CharField(max_length=20, null=True)
 
 	def __unicode__(self):
 		return self.name

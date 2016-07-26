@@ -46,7 +46,7 @@ class FileDownload(View):
 	"""
 
 	def get(self, request, filetoken, filename, format=None):
-		file_path = "/home/cuih/ttt2/" + filetoken + '_' + filename
+		file_path = "/home/vinzor/tmp_files/download" + filetoken + '_' + filename
 		if not os.path.exists(file_path):
 			return Response({"detail": "no such document"},
 				status=status.HTTP_404_NOT_FOUND)

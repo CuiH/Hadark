@@ -13,6 +13,8 @@ from django.core.files import File
 from mainapp.models import Document, Job, Result
 from mainapp.serializers import DocumentSerializer1, DocumentSerializer2, JobSerializer1, JobSerializer2
 from mainapp.permissions import IsOwner
+
+from almee.action import action
 		
 
 class DocumentList(APIView):
@@ -41,9 +43,12 @@ class DocumentList(APIView):
 			return Response({"detail": "please upload a file"}, 
 				status=status.HTTP_400_BAD_REQUEST)
 
-		# begin to write file to local file system
+		# insert in to db with status 'uploading'
 		file_obj = request.data['file']
-		path = "/home/cuih/ttt/" + request.user.username + "/"
+		new_document = self.perform_create(serializer, file_obj.size)
+
+		# begin to write file to local file system
+		path = "/home/vinzor/tmp_files/upload" + request.user.username + "/"
 		if not os.path.exists(path):
 			os.makedirs(path)
 		file_path = path + request.data["name"]
@@ -56,15 +61,19 @@ class DocumentList(APIView):
 
 		# upload file to hadoop
 
-		# insert into db
-		self.perform_create(serializer, file_obj.size)
-
+		# update document in db with new status 'uploaded'
+		self.perform_update(new_document, 'uploaded')
+		
 		return Response({"detail": serializer.data})
 		
 	def perform_create(self, serializer, file_size):
 		now_user = self.request.user
 		now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
-		serializer.save(owner=now_user, upload_time=now_time, size=file_size)
+		return serializer.save(owner=now_user, upload_time=now_time, size=file_size, status="uploading")
+
+	def perform_update(self, doc, doc_status):
+		doc.status = doc_status
+		doc.save()
 
 	def save_file(self, file_path, file_obj):
 		des = open(file_path, 'wb+')
@@ -130,7 +139,7 @@ class JobList(APIView):
 
 		# update from spark
 		for job in jobs:
-			if job.status == "running":
+			if job.status == "running" or job.status == "starting" or job.status:
 				pass
 
 		serializer = JobSerializer1(jobs, many=True)
@@ -147,27 +156,35 @@ class JobList(APIView):
 		try:
 			document = Document.objects.get(pk=request.data["code_files"])
 			# check owner
-			if document.owner is not request.user:
+			if document.owner != request.user:
 				return Response({"detail": "you have no access to this documet"},
-				status=status.HTTP_403_FORBIDDEN)
+					status=status.HTTP_403_FORBIDDEN)
 		except Document.DoesNotExist:
 			return Response({"detail": "invalid document id"},
 				status=status.HTTP_400_BAD_REQUEST)
 
-		# start a spark job
-
-		# insert into db
+		# insert into db with status 'starting'
 		new_job = self.perform_create(serializer)
 
+		# start a spark job
+		# ac = action()
+		# s_id = ac.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '6', 'hdfs:///spark-examples-1.6.2-hadoop2.2.0.jar', '1000')
+
+		# update job  in db with status 'runnning'
+		job_id = 0
+		self.perform_update(new_job, job_id, 'running')
+		
 		return Response({"detail": JobSerializer1(new_job).data})
 
 	def perform_create(self, serializer):
 		now_user = self.request.user
 		now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
-		job = serializer.save(owner=now_user, start_time=now_time, status="running", spark_job_id=-1)
-		
-		return job
+		return serializer.save(owner=now_user, start_time=now_time, status="starting", spark_job_id=-1)
 
+	def perform_update(self, job, job_id, job_status):
+		job.spark_job_id = job_id
+		job.status = job_status
+		job.save()
 
 class JobDetail(APIView):
 	"""

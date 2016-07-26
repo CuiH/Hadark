@@ -9,7 +9,7 @@ class DocumentSerializer1(serializers.ModelSerializer):
 	"""
 	class Meta:
 		model = Document
-		fields = ('id', 'name', 'upload_time', 'size', 'description')
+		fields = ('id', 'name', 'upload_time', 'size', 'description', 'status')
 
 
 class DocumentSerializer2(serializers.ModelSerializer):
@@ -19,10 +19,11 @@ class DocumentSerializer2(serializers.ModelSerializer):
 	owner = serializers.ReadOnlyField(source='owner.username')
 	upload_time = serializers.ReadOnlyField()
 	size = serializers.ReadOnlyField()
+	status = serializers.ReadOnlyField()
 
 	class Meta:
 		model = Document
-		fields = ('id', 'name', 'upload_time', 'size', 'description', 'owner')
+		fields = ('id', 'name', 'upload_time', 'size', 'description', 'owner', 'status')
 
 
 class JobSerializer1(serializers.ModelSerializer):
