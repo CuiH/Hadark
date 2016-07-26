@@ -10,14 +10,14 @@ class action:
     def __init__(self):
         """Constructor"""
 
-    def killApplicationByID(applicationID):
+    def killApplicationByID(self, applicationID):
         order = 'bash /usr/local/hadoop-2.7.2/bin/yarn application -kill ' + applicationID
         #feedback = os.popen(order).read()
         feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         feedback = feedback.stdout.readline()
         return feedback
 
-    def getApplicationIDSet(arg='RUNNING'):
+    def getApplicationIDSet(self, arg='RUNNING'):
         order = 'bash /usr/local/hadoop-2.7.2/bin/yarn application -list -appStates ' + arg
         feedback = os.popen(order).read()
         regix = re.compile(r'application_\d+_\d+')
@@ -25,16 +25,16 @@ class action:
         IDset.sort()
         return IDset
 
-    def submitJob(className, driverMemory, executorMemory, executorCores, jarPath, args=""):
+    def submitJob(self, className, driverMemory, executorMemory, executorCores, jarPath, args=""):
         order = 'bash /usr/local/spark-1.6.2-bin-without-hadoop/bin/spark-submit --class ' + className + ' --master yarn --deploy-mode cluster --driver-memory ' + \
             driverMemory + ' --executor-memory ' + executorMemory + \
                 ' --executor-cores ' + executorCores + ' --queue default ' \
                 + jarPath + ' ' + args
-        applicationIDSet = getApplicationIDSet('ALL')
+        applicationIDSet = self.getApplicationIDSet('ALL')
         applicationNum = len(applicationIDSet)
         # feedback = os.popen(order).read()
         feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        applicationIDSet = getApplicationIDSet('ALL')
+        applicationIDSet = self.getApplicationIDSet('ALL')
         applicationNum2 = len(applicationIDSet)
         if applicationNum == applicationNum2:
         	result = feedback.stdout.readline()
@@ -48,19 +48,21 @@ class action:
         # '-------------------------------------------------------------------------------'
         return result
 
-    def getStatus(applicationID):
+    def getStatus(self, applicationID):
         order = 'bash /usr/local/hadoop-2.7.2/bin/yarn application -status ' + applicationID
         feedback = os.popen(order).read()
         feedback = feedback.replace('\n', '')
         first = feedback.split('\t')
         report = {}
-        for item in first:
+        #for item in first:
+        for index in range(0, 16):
+            item = first[index]
             second = item.split(' : ')
             report[second[0]] = second[1]
         report['Application Report'] = applicationID
         return report
 
-    def getLog(applicationID):
+    def getLog(self, applicationID):
         order = 'bash /usr/local/hadoop-2.7.2/bin/yarn logs -applicationId  ' + applicationID
         feedback = os.popen(order).read()
         # bad response
@@ -76,7 +78,7 @@ class action:
         # end
         return logs
 
-    def uploadFile(filePath, filePathHDFS):
+    def uploadFile(self, filePath, filePathHDFS):
         # order = 'hadoop fs -put ' + filePath + ' ' + filePathHDFS
         order = 'bash /usr/local/bash/hdfs-put.sh ' + filePath + ' ' + filePathHDFS
         #feedback = os.popen(order).read()
@@ -84,14 +86,14 @@ class action:
         feedback = feedback.stdout.readline()
         return feedback
 
-    def makeDirectory(filePathHDFS):
+    def makeDirectory(self, filePathHDFS):
         order = 'bash /usr/local/bash/hdfs-mkdir.sh ' + filePathHDFS
         #feedback = os.popen(order).read()
         feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         feedback = feedback.stdout.readline()
         return feedback
 
-    def downloadFIle(filePathHDFS, filePath):
+    def downloadFIle(self, filePathHDFS, filePath):
         # order = 'hadoop fs -get ' + filePathHDFS + ' ' + filePath
         order = 'bash /usr/local/bash/hdfs-get.sh ' + filePathHDFS + ' ' + filePath
         #feedback = os.popen(order).read()
@@ -99,7 +101,7 @@ class action:
         feedback = feedback.stdout.readline()
         return feedback
 
-    def removeFile(filePathHDFS, document=False):
+    def removeFile(self, filePathHDFS, document=False):
         if document is True:
             order = 'bash /usr/local/bash/hdfs-rmfile.sh ' + filePathHDFS
         else:
@@ -109,3 +111,6 @@ class action:
         feedback = feedback.stdout.readline()
         return feedback
 
+#if __name__ == '__main__':
+#        ac = action()
+#        ac.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '7', 'hdfs:///spark-examples-1.6.2-hadoop2.2.0.jar', '1000')
