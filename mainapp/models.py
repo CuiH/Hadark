@@ -6,9 +6,10 @@ from django.db import models
 class Document(models.Model):
 	name = models.CharField(max_length=100)
 	upload_time = models.DateTimeField('time uploaded')
-	size = models.IntegerField(default=0)
+	size = models.BigIntegerField(default=0)
 	description = models.CharField(max_length=250, null=True)
 	owner = models.ForeignKey('auth.User', related_name="documents")
+	status = models.CharField(max_length=20, null=True)
 
 	def __unicode__(self):
 		return self.name

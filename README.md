@@ -2,7 +2,9 @@
 ```
 pip install django
 pip install djangorestframework
-pip install python-mysql
+apt-get install libmysqld-dev
+apt-get install python-dev
+pip install mysql-python
 pip install django-cors-headers
 ```
 

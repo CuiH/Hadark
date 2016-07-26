@@ -26,10 +26,8 @@ router.register(r'user', fs_views.UserViewSet)
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^api/', include('mainapp.urls', namespace="api")),
-	# url(r'^authentication/', include('authentication.urls', namespace="authentication")),
-	url(r'^files/', include('file_management.urls', namespace="files")),
-
-    url(r'^', include(router.urls)),
+    url(r'^fs/', include(router.urls)),
+	url(r'^authentication/', include('authentication.urls', namespace="authentication")),
 	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^file-api/$', fs_views.get_file_content),
 ]
