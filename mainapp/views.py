@@ -13,9 +13,7 @@ from django.core.files import File
 from mainapp.models import Document, Job, Result
 from mainapp.serializers import DocumentSerializer1, DocumentSerializer2, JobSerializer1, JobSerializer2
 from mainapp.permissions import IsOwner
-
 from almee.action import action
-		
 
 class DocumentList(APIView):
 	"""
@@ -39,6 +37,7 @@ class DocumentList(APIView):
 				status=status.HTTP_400_BAD_REQUEST)
 
 		# check file
+		print(request.data["file"])
 		if not isinstance(request.data["file"], File):
 			return Response({"detail": "please upload a file"}, 
 				status=status.HTTP_400_BAD_REQUEST)
