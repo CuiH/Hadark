@@ -23,10 +23,14 @@ def upload_file(username, local_file, remote_url):
     }
     files = {'file': open(local_file, 'rb')}
     r = requests.put(url, params=payload, files=files)
-    print(r.headers)
-    print('---------------')
-    print(r.text)
 
+    response = None
+    if r.headers['Content-Length'] != '0':
+        data = json.loads(r.text)
+        response = data['RemoteException']['exception']
+    else:
+        response = "Upload success"
+    return response
 
 def open_file(username, remote_url):
     """
@@ -50,8 +54,14 @@ def make_dir(username, remote_url):
         'user.name': username,
     }
     r = requests.put(url, params=payload)
-    print(r.headers)
-    print(r.text)
+
+    data = json.loads(r.text)
+    response = None
+    if 'RemoteException' in data:
+        response = data['RemoteException']['exception']
+    else:
+        response = "Create directory success"
+    return response
 
 def rename_object(username, remote_url, new_name):
     """
@@ -64,7 +74,16 @@ def rename_object(username, remote_url, new_name):
         'destination': new_name
     }
     r = requests.put(url, params=payload)
+    print(r.headers)
     print(r.text)
+    data = json.loads(r.text)
+    response = None
+    if data['boolean'] == True:
+        response = "success"
+    else:
+        response = "fail"
+    return response
+
 
 def delete_object(username, remote_url):
     """
@@ -76,7 +95,16 @@ def delete_object(username, remote_url):
         'user.name': username
     }
     r = requests.delete(url, params=payload)
+    print(r.headers)
     print(r.text)
+
+    data = json.loads(r.text)
+    response = None
+    if 'RemoteException' in data:
+        response = data['RemoteException']['exception']
+    else:
+        response = "Remove object success"
+    return response
 
 def get_status(username, remote_url):
     """
@@ -88,7 +116,6 @@ def get_status(username, remote_url):
         'user.name': username
     }
     r = requests.get(url, params=payload)
-    print(r.text)
 
 def get_list(username, remote_url):
     """
@@ -101,7 +128,6 @@ def get_list(username, remote_url):
         'user.name': username,
     }
     r = requests.get(url, params=payload)
-    print(r.text)
 
 def test():
     user = 'vinzor'

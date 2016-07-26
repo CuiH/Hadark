@@ -113,11 +113,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # rest framework
 
 REST_FRAMEWORK = {
-    
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (                      
-    #     'rest_framework.authentication.BasicAuthentication', 
-    # ),                                                       
-    
+
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.BasicAuthentication',
+    # ),
+
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),

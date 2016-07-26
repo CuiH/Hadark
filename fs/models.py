@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save, post_delete, post_save
+from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 
 from .basis import *
@@ -26,7 +26,6 @@ class File(models.Model):
     def get_hdfs_path(self):
         f = self
         hdfs_path = ""
-        # /, peter
         while (f != None):
             hdfs_path = "/" + f.name + hdfs_path
             f = f.parent
@@ -35,13 +34,32 @@ class File(models.Model):
         else:
             return hdfs_path[1:]
 
+def get_home_dir(user):
+    username = user.username
+    root_dir = File.objects.filter(parent=None)[0]
+    user_dir = root_dir.parent_node.filter(name='user')[0]
+    home_dir = user_dir.parent_node.filter(name=user.username)[0]
+    return home_dir
+
 @receiver(post_save, sender=User)
 def create_user_dir(sender, instance, created, **kwargs):
     """
-    Create corresponding File instance when a user is created
+    Create corresponding File instance and directory in hdfs
+    when a user is created
     """
     if created:
         root_dir = File.objects.filter(parent=None)[0]
         user_dir = root_dir.parent_node.filter(name='user')[0]
-        File.objects.create(owner=instance, name=instance.username, parent=user_dir)
+        home_dir = File.objects.create(owner=instance, name=instance.username, parent=user_dir)
+        make_dir(instance.username, home_dir.get_hdfs_path())
 
+@receiver(pre_delete, sender=User)
+def remove_user_dir(sender, instance, using, **kwargs):
+    """
+    Remove corresponding File instance and directory in hdfs
+    when a user is deleted
+    """
+    home_dir = get_home_dir(instance)
+
+    delete_object(instance.username, home_dir.get_hdfs_path())
+    home_dir.delete()
