@@ -6,5 +6,3 @@ from .models import *
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
     list_display = ('owner', 'name', 'file_type')
-
-

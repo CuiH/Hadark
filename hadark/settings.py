@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'mainapp',
-    # 'authentication',
-    'file_management',
+    'authentication',
     'fs',
 ]
 
@@ -114,15 +113,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # rest framework
 
 REST_FRAMEWORK = {
-    ############################################################
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (                      #
-    #     'rest_framework.authentication.BasicAuthentication', #
-    # ),                                                       #
-    ############################################################
+    
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (                      
+    #     'rest_framework.authentication.BasicAuthentication', 
+    # ),                                                       
+    
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
-    'PAGE_SIZE': 10
+    # 'PAGE_SIZE': 10
 }
 
 

@@ -93,3 +93,5 @@ ENV/
 
 # django model modification
 migrations/
+
+media/file/
