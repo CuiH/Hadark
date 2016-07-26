@@ -48,7 +48,7 @@ class DocumentList(APIView):
 		new_document = self.perform_create(serializer, file_obj.size)
 
 		# begin to write file to local file system
-		path = "/home/vinzor/tmp_files/upload" + request.user.username + "/"
+		path = "/home/vinzor/tmp_files/upload/" + request.user.username + "/"
 		if not os.path.exists(path):
 			os.makedirs(path)
 		file_path = path + request.data["name"]
@@ -116,6 +116,10 @@ class DocumentDetail(APIView):
 	def delete(self, request, pk, format=None):
 		document = self.get_object(pk)
 		if document is not None:
+			# check status
+			if document.status == "uploading":
+				return Response({"detail": "you can't do it now"},
+					status=status.HTTP_400_BAD_REQUEST)
 			# delete from hadoop
 
 			# delete from db
@@ -139,9 +143,9 @@ class JobList(APIView):
 
 		# update from spark
 		for job in jobs:
-			if job.status == "running" or job.status == "starting" or job.status:
-				pass
-
+			# job.check_status()
+			pass
+					
 		serializer = JobSerializer1(jobs, many=True)
 
 		return Response({"detail": serializer.data})
@@ -165,27 +169,24 @@ class JobList(APIView):
 
 		# insert into db with status 'starting'
 		new_job = self.perform_create(serializer)
+		job_id = 0
 
 		# start a spark job
 		# ac = action()
 		# s_id = ac.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '6', 'hdfs:///spark-examples-1.6.2-hadoop2.2.0.jar', '1000')
+		# job_id = s_id
 
 		# update job  in db with status 'runnning'
-		job_id = 0
-		self.perform_update(new_job, job_id, 'running')
+		new_job.update_partially(spark_job_id=job_id, status='RUNNING')
 		
 		return Response({"detail": JobSerializer1(new_job).data})
 
 	def perform_create(self, serializer):
 		now_user = self.request.user
 		now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
-		return serializer.save(owner=now_user, start_time=now_time, status="starting", spark_job_id=-1)
+		return serializer.save(owner=now_user, start_time=now_time, status="STARTING", spark_job_id=-1)
 
-	def perform_update(self, job, job_id, job_status):
-		job.spark_job_id = job_id
-		job.status = job_status
-		job.save()
-
+	
 class JobDetail(APIView):
 	"""
 	retrieve/delete a Job
@@ -206,8 +207,7 @@ class JobDetail(APIView):
 		job = self.get_object(pk)
 		if job is not None:
 			# update from spark
-			if job.status == "running":
-				pass
+			job.check_status()
 
 			serializer = JobSerializer1(job)
 
@@ -221,17 +221,17 @@ class JobDetail(APIView):
 		job = self.get_object(pk)
 		if job is not None:
 			# check status
-			if job.status == "aborted" or job.status == "finished":
+			if job.status in ["KILLING", "KILLED", "FINISHED", "FAILED"]:
 				return Response({"detail": "invalid action"},
 					status=status.HTTP_400_BAD_REQUEST)
 
 			# abort in spark
-
-			# update db
-			job.status = "aborted"
+			ac = action()
+			ac.killApplicationById(job.spark_job_id)
 			now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
-			job.end_time = now_time
-			job.save()
+
+			# update db with status "KILLING"
+			job.update_partially(status="KILLING", end_time=now_time)
 
 			serializer = JobSerializer1(job)
 
