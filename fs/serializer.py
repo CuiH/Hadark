@@ -3,7 +3,6 @@ from .models import File
 from rest_framework import serializers
 
 
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -13,5 +12,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class FileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = File
-        fields = '__all__'
-        read_only_fields = ('owner', 'modified', 'size', 'hdfs_path')
+        # fields = '__all__'
+        fields = ('url', 'pk', 'name', 'file_uploaded', 'permission', 'size', 'modified', 'file_type', 'owner', 'parent')
+        read_only_fields = ('owner', 'modified', 'size', 'hdfs_path', 'pk')
