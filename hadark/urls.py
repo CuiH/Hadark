@@ -19,15 +19,15 @@ from rest_framework import routers
 from fs import views as fs_views
 
 router = routers.DefaultRouter()
-router.register(r'file', fs_views.FileViewSet)
+router.register(r'file', fs_views.FileViewSet, base_name='file')
 router.register(r'user', fs_views.UserViewSet)
 
 
 urlpatterns = [
-	url(r'^admin/', admin.site.urls),
-	url(r'^api/', include('mainapp.urls', namespace="api")),
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/', include('mainapp.urls', namespace="api")),
     url(r'^fs/', include(router.urls)),
-	url(r'^authentication/', include('authentication.urls', namespace="authentication")),
-	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^authentication/', include('authentication.urls', namespace="authentication")),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^file-api/$', fs_views.get_file_content),
 ]
