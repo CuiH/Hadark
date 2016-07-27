@@ -69,8 +69,8 @@ class JobList(APIView):
 		# s_id = ac.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '6', 'hdfs:///spark-examples-1.6.2-hadoop2.2.0.jar', '1000')
 		# job_id = s_id
 
-		# update job  in db with status 'runnning'
-		new_job.update_partially(spark_job_id=job_id, status='RUNNING')
+		# update job  in db with status 'ACCEPTED'
+		new_job.update_partially(spark_job_id=job_id, status='ACCEPTED')
 		
 		return Response({"detail": JobSerializer1(new_job).data})
 
@@ -115,15 +115,15 @@ class JobDetail(APIView):
 		if job is not None:
 			# check status
 			if job.status in ["KILLING", "KILLED", "FINISHED", "FAILED"]:
-				return Response({"detail": "invalid action"},
+				return Response({"detail": "you can not abort this job"},
 					status=status.HTTP_400_BAD_REQUEST)
 
 			# abort in spark
-			ac = action()
-			ac.killApplicationById(job.spark_job_id)
-			now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
+			# ac = action()
+			# ac.killApplicationById(job.spark_job_id)
 
 			# update db with status "KILLING"
+			now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
 			job.update_partially(status="KILLING", end_time=now_time)
 
 			serializer = JobSerializer1(job)
@@ -136,8 +136,11 @@ class JobDetail(APIView):
 	def delete(self, request, pk, format=None):
 		job = self.get_object(pk)
 		if job is not None:
-			# delete from spark
-
+			# check status
+			if job.status in ["RUNNING", "ACCEPTED", "STARTING", "KILLING"]:
+				return Response({"detail": "you can not delete this job"},
+					status=status.HTTP_400_BAD_REQUEST)
+				
 			# delete from db
 			job.delete()
 

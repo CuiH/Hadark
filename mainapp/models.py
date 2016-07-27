@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 
+import datetime
+
 from django.db import models
+from django.utils.timezone import utc
 
 from almee.action import action
 
@@ -29,14 +32,11 @@ class Job(models.Model):
 		if old_status in ["ACCEPTED", "RUNNING", "KILLING"]:
 			ac = action()
 			new_status = ac.getStatus(self.spark_job_id)['State']
-			if old_status == "ACCEPTED" and new_status != old_status:
+			if old_status != new_status:
 				self.update_partially(status=new_status)
-
-			if old_status == "RUNNING" and new_status != old_status:
-				self.update_partially(status=new_status)
-
-			if old_status == "KILLING" and new_status != old_status and new_status != "RUNNING":
-				self.update_partially(status=new_status)
+				if new_status in ["FAILED", "FINISHED"]:
+					now_time = datetime.datetime.utcnow().replace(tzinfo=utc)
+					self.update_partially(end_time=now_time)
 
 	def update_partially(self, **args):
 		for key in args:
