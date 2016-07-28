@@ -6,6 +6,7 @@ apt-get install libmysqld-dev
 apt-get install python-dev
 pip install mysql-python
 pip install django-cors-headers
+pip install PyMysql
 ```
 
 ---
@@ -21,3 +22,7 @@ pip install django-cors-headers
 python manage.py migrate
 python manage.py runserver
 ``` 
+
+---
+
+P.S. pages should be transmitted through nginx, not django

@@ -1,0 +1,39 @@
+.content {
+	width: 100%;
+}
+
+.tab-container {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.document-tab {
+	padding: 30px;
+}
+
+.job-tab {
+	padding: 30px;
+}
+
+.force-remove-border {
+	border: none !important;
+	box-shadow: none !important;
+}
+
+.add-argin-1 {
+	margin-top: 25px !important;
+	margin-bottom: 25px !important;
+}
+
+.job-detail {
+	width: 94%; 
+	margin: 0 auto;
+}
+
+#job_detail_modal {
+	font-size: 1.1em; 
+}
+
+#file_detail_modal {
+	font-size: 1.1em; 
+}
