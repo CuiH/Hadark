@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 
 	if (getCookie("username") == null) {
-		//window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true";
+		window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true";
 	} else {
       $("#userName").text(getCookie("username"));
   	}
