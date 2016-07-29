@@ -1,0 +1,38 @@
+body {
+	/*font-family: '微软雅黑', 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;*/
+	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	height: 100%;
+}
+/* footer banner */
+body {
+	background-image: url(../../images/back.png);
+}
+#top {
+	background-color: rgba(155, 196, 58, 0.4);
+	
+}
+#mainContent {
+	margin: 0 auto;
+	margin-top: 200px;
+}
+#main {
+	height: 100%;
+	margin-bottom: -200px;
+}
+h1.ui.header {
+	font-size: 60px;
+}
+h1.ui.header .sub.header {
+	font-size: 45px;
+}
+#getStart {
+	margin: 0 auto;
+	margin-top: 30px;
+}
+#footer {
+	background-color: rgba(120, 173, 239, 0.4);
+	height: 200px;
+}
+#name-nav {
+	display: none;
+}

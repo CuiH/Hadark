@@ -14,9 +14,8 @@ class action:
     def killApplicationById(self, applicationId):
         order = 'bash /usr/local/hadoop-2.7.2/bin/yarn application -kill ' + applicationId
         #feedback = os.popen(order).read()
-        feedback = subprocess.Popen(
-            order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        feedback = feedback.stdout.readline()
+        feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        feedback = feedback.stdout.read()
         return feedback
 
     def getApplicationName2IdSet(self, arg='RUNNING'):
@@ -40,15 +39,14 @@ class action:
                 ' --executor-cores ' + executorCores + ' --queue default '\
                 + jarPath + ' ' + args
         # feedback = os.popen(order).read()
-        feedback = subprocess.Popen(
-            order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         while 1:
             applicationIdSet = self.getApplicationName2IdSet('ALL')
             if applicationIdSet.has_key(name):
                 applicationId = applicationIdSet[name]
-                break
+                break;
             else:
-                time.sleep(1)
+                time.sleep(2)
         return applicationId
 
     def getStatus(self, applicationId):
@@ -57,7 +55,7 @@ class action:
         feedback = feedback.replace('\n', '')
         first = feedback.split('\t')
         report = {}
-        # for item in first:
+        #for item in first:
         for index in range(0, 16):
             item = first[index]
             second = item.split(' : ')
@@ -85,26 +83,23 @@ class action:
         # order = 'hadoop fs -put ' + filePath + ' ' + filePathHDFS
         order = 'bash /usr/local/bash/hdfs-put.sh ' + filePath + ' ' + filePathHDFS
         #feedback = os.popen(order).read()
-        feedback = subprocess.Popen(
-            order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        feedback = feedback.stdout.readline()
+        feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        feedback = feedback.stdout.read()
         return feedback
 
     def makeDirectory(self, filePathHDFS):
         order = 'bash /usr/local/bash/hdfs-mkdir.sh ' + filePathHDFS
         #feedback = os.popen(order).read()
-        feedback = subprocess.Popen(
-            order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        feedback = feedback.stdout.readline()
+        feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        feedback = feedback.stdout.read()
         return feedback
 
     def downloadFIle(self, filePathHDFS, filePath):
         # order = 'hadoop fs -get ' + filePathHDFS + ' ' + filePath
         order = 'bash /usr/local/bash/hdfs-get.sh ' + filePathHDFS + ' ' + filePath
         #feedback = os.popen(order).read()
-        feedback = subprocess.Popen(
-            order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        feedback = feedback.stdout.readline()
+        feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        feedback = feedback.stdout.read()
         return feedback
 
     def removeFile(self, filePathHDFS, document=False):
@@ -113,12 +108,11 @@ class action:
         else:
             order = 'bash /usr/local/bash/hdfs-rmdir.sh ' + filePathHDFS
         #feedback = os.popen(order).read()
-        feedback = subprocess.Popen(
-            order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        feedback = feedback.stdout.readline()
+        feedback = subprocess.Popen(order, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        feedback = feedback.stdout.read()
         return feedback
 
-# if __name__ == '__main__':
+#if __name__ == '__main__':
 #       ac = action()
 #       ID = ac.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '7', 'hdfs:///spark-examples-1.6.2-hadoop2.2.0.jar', '1000')
 #       print '-------------------------------------------------'
