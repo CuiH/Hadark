@@ -6,9 +6,9 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializer import FileSerializer, UserSerializer
-from .models import File
-from .basis import upload_file, delete_object, rename_object, open_file, make_dir
+from fs.serializer import FileSerializer, UserSerializer
+from fs.basis import upload_file, delete_object, rename_object, open_file, make_dir
+from fs.models import File
 # Create your views here.
 
 

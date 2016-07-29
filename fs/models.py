@@ -1,26 +1,28 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_delete, post_save
+from django.db.models.signals import pre_save, post_save, pre_delete, post_delete
 from django.dispatch import receiver
-from .basis import make_dir, delete_object
+from fs.basis import make_dir, delete_object
 # Create your models here.
 
 class File(models.Model):
     """
     A logic file instance for operations.
     """
-    TYPE_CHOICE   = {
+    TYPE_CHOICE = {
         ('DIR', 'directory'),
         ('FILE', 'file'),
     }
-    owner         = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='upload_file')
-    name          = models.CharField(max_length=100, null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='upload_file')
+    name = models.CharField(max_length=100, null=True, blank=True)
     file_uploaded = models.FileField(upload_to='file', null=True, blank=True)
-    permission    = models.CharField(max_length=10, null=True)
-    size          = models.IntegerField(default=0,null=True)
-    modified      = models.DateTimeField(null=True)
-    file_type     = models.CharField(max_length=20, choices=TYPE_CHOICE, default='DIR')
-    parent        = models.ForeignKey('File', related_name='parent_node', on_delete=models.CASCADE, null=True, blank=True)
+    permission = models.CharField(max_length=10, null=True)
+    size = models.IntegerField(default=0, null=True)
+    modified = models.DateTimeField(null=True)
+    file_type = models.CharField(max_length=20, choices=TYPE_CHOICE, default='DIR')
+    parent = models.ForeignKey('File', related_name='parent_node', on_delete=models.CASCADE,
+                               null=True, blank=True)
 
     def __str__(self):
         return self.get_hdfs_path()
@@ -46,6 +48,7 @@ class File(models.Model):
         sub_file = self.parent_node.all()
         return sub_file
 
+
 def delete_user_file_in_hdfs(user):
     """
     Remove user's all file in hdfs.
@@ -58,6 +61,20 @@ def delete_user_file_in_hdfs(user):
             delete_object(username, hdfs_path)
 
 
+def update_file_info(instance):
+    """
+    Recursively update size and modified
+    """
+    instance.modified = timezone.now()
+    if instance.file_type == 'DIR':
+        sub_file_set = instance.get_sub_file()
+        sum_size = 0
+        for sub_file in sub_file_set:
+            sum_size += sub_file.size
+        instance.size = sum_size
+    print(instance.name, instance.size)
+
+
 def get_home_dir(user):
     """
     Return the home File instance of a user
@@ -67,6 +84,7 @@ def get_home_dir(user):
     user_dir = root_dir.parent_node.filter(name='user')[0]
     home_dir = user_dir.parent_node.filter(name=username)[0]
     return home_dir
+
 
 @receiver(post_save, sender=User)
 def create_user_dir(sender, instance, created, **kwargs):
@@ -81,8 +99,9 @@ def create_user_dir(sender, instance, created, **kwargs):
         response = make_dir(instance.username, home_dir.get_hdfs_path())
         print(response)
 
+
 @receiver(pre_delete, sender=User)
-def remove_user_dir(sender, instance, using, **kwargs):
+def remove_user_dir(sender, instance, **kwargs):
     """
     Remove corresponding File instance and directory in hdfs
     when a user is deleted
@@ -92,3 +111,31 @@ def remove_user_dir(sender, instance, using, **kwargs):
     response = delete_object(instance.username, home_dir.get_hdfs_path())
     print(response)
     home_dir.delete()
+
+
+@receiver(pre_save, sender=File)
+def update_pre_save(sender, instance, **kwargs):
+    """
+    Update size and modified
+    """
+    update_file_info(instance)
+
+
+@receiver(post_save, sender=File)
+def update_post_save(sender, instance, **kwargs):
+    """
+    Update parent File after instance is updated
+    """
+    if instance.parent is not None:
+        instance.parent.save()
+
+
+@receiver(post_delete, sender=File)
+def update_deleted(sender, instance, **kwargs):
+    """
+    Update parent File after instance is deleted
+    """
+    parent = instance.parent
+    parent.save()
+
+
