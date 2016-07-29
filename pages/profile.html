@@ -237,7 +237,7 @@
 			<span ng-bind="ctrl.viewing_job.parameters">loading...</span>
 			<div class="ui divider"></div>
 			<div class="ui teal horizontal label">Code File</div>
-			<span ng-bind="ctrl.viewing_job.code_files[0].name">loading...</span>
+			<span ng-bind="ctrl.viewing_job.code_files[0].hdfs_path">loading...</span>
 		</div>
 		<div class="actions">
 			<div class="ui positive right labeled icon button">OK <i class="checkmark icon"></i> </div>
@@ -259,7 +259,7 @@
 			<span ng-bind="ctrl.viewing_file.modified | date: 'medium': '+8000'"></span>
 			<div class="ui divider"></div>
 			<div class="ui teal horizontal label">Path</div>
-			<span ng-bind=""></span>
+			<span ng-bind="ctrl.viewing_file.hdfs_path"></span>
 			<div class="ui divider"></div>
 			<p>
 				Content:

@@ -1,13 +1,20 @@
 profile.factory("profileService", ["$http", "$q", function($http, $q) {
 	return {
 		getAllJobs: function() {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
 				method: "GET",
 				url: "http://" + CURRENT_URL + ":8000/api/jobs",
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH)
+					"Authorization": "Basic " + btoa(auth)
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
@@ -19,13 +26,20 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		getJobById: function(job_id) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
 				method: "GET",
 				url: "http://" + CURRENT_URL + ":8000/api/job/" + job_id,
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH)
+					"Authorization": "Basic " + btoa(auth)
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
@@ -37,13 +51,20 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		deleteJobById: function(job_id) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
 				method: "DELETE",
 				url: "http://" + CURRENT_URL + ":8000/api/job/" + job_id,
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH)
+					"Authorization": "Basic " + btoa(auth)
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
@@ -55,13 +76,20 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		abortJobById: function(job_id) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
 				method: "PUT",
 				url: "http://" + CURRENT_URL + ":8000/api/job/" + job_id,
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH)
+					"Authorization": "Basic " + btoa(auth)
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
@@ -73,6 +101,13 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		startJob: function(serialized_data) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
@@ -80,7 +115,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 				url: "http://" + CURRENT_URL + ":8000/api/jobs",
 				data: serialized_data,
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH),
+					"Authorization": "Basic " + btoa(auth),
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
 			}).then(function successCallback(response) {
@@ -93,13 +128,20 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		getHomeDir: function() {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
 				method: "GET",
 				url: "http://" + CURRENT_URL + ":8000/fs/file/home/",
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH),
+					"Authorization": "Basic " + btoa(auth),
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
@@ -111,6 +153,13 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		getSubFilesById: function(dir_id) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
@@ -120,7 +169,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 					"sub_file": dir_id
 				},
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH),
+					"Authorization": "Basic " + btoa(auth),
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
@@ -132,6 +181,13 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		uploadFile: function(formData) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$.ajax({
@@ -142,7 +198,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 				contentType: false,
 				processData: false,
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH)
+					"Authorization": "Basic " + btoa(auth)
 				},
 				xhr: function(){
 					var xhr = $.ajaxSettings.xhr();
@@ -160,13 +216,20 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		deleteFileById: function(file_id) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
 				method: "DELETE",
 				url: "http://" + CURRENT_URL + ":8000/fs/file/" + file_id + "/",
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH),
+					"Authorization": "Basic " + btoa(auth),
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
@@ -178,13 +241,20 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 		},
 
 		getFileById: function(file_id) {
+			var auth = ""
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+			
 			var deferred = $q.defer()
 			var promise = deferred.promise
 			$http({
 				method: "GET",
 				url: "http://" + CURRENT_URL + ":8000/fs/file/" + file_id + "/",
 				headers: {
-					"Authorization": "Basic " + btoa(AUTH),
+					"Authorization": "Basic " + btoa(auth),
 				}
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)

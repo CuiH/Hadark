@@ -1,8 +1,14 @@
 var profile = angular.module("profileApp", [])
 
+// api
 var CURRENT_URL = "172.18.231.84"
 
-var AUTH = "hwb:hwb"
+// static
+var CURRENT_URL_2 = "localhost"
+
+var TEST_AUTH = "hwb:hwb"
+
+var DEBUG = false
 
 // get file name from input_file
 function getFileName(filePath) {
@@ -62,4 +68,25 @@ function alterProgressModal() {
 	$("#progress_modal_bar").css("display", "none")
 	$("#progress_modal_message").text("Success!")
 	$("#progress_modal_button").html('OK<i class="checkmark icon"></i>')
+}
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0; i<ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1);
+		if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+	}
+	return null;
+}
+
+function checkLogin() {
+	var username = getCookie("username")
+	var password = getCookie("password")
+	if (username == null || password == null) {
+		$(window.location).attr('href', 'http://' +  CURRENT_URL_2 + '/homepage.html?login=true')
+	} else {
+		return username + ":" + password
+	}
 }

@@ -7,9 +7,17 @@ from fs.serializer import FileSerializer
 
 
 class CodeFileSerializer1(serializers.ModelSerializer):
+	hdfs_path = serializers.SerializerMethodField()
+	
 	class Meta:
 		model = File
-		fields = ('id', 'name', 'size')
+		fields = ('id', 'name', 'size', 'hdfs_path')
+
+	def get_hdfs_path(self, obj):
+		"""
+		Return hdfs_path of a File instance
+		"""
+		return obj.get_hdfs_path()
 
 
 class JobSerializer1(serializers.ModelSerializer):
