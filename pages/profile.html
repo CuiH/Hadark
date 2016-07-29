@@ -3,18 +3,31 @@
 <head>
 	<title>User Profile</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link href="css/profile/profile.css" rel="stylesheet">
+	
 	
 	<link href="http://cdn.bootcss.com/semantic-ui/2.1.8/semantic.css" rel="stylesheet">
 	<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 	<script src="http://cdn.bootcss.com/semantic-ui/2.1.8/semantic.js"></script>
 	<script src="http://cdn.bootcss.com/angular.js/1.5.8/angular.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<link href="css/profile/profile.css" rel="stylesheet">
 
 </head>
 
 <body ng-app="profileApp" ng-controller="profileController as ctrl">
-
-	<div class="content">
+	<!-- 菜单栏 -->
+	<div class="ui inverted borderless menu" id="top"> 
+		<div class="ui container">
+			<a href="#" class="header item"><img src="./images/icon.png" class="ui centered mini image"></a>
+			<a href="#" class="item">查看信息</a>
+			<a href="#" class="item">帮助</a>
+			<div class="right menu" id="name-nav">
+				<a class="right item" id="userName" href="/profile">用户名</a>
+				<a class="right item" id="logOut">退出</a>
+			</div>
+		</div>
+	</div>
+	<div class="content" id="mainContent">
 		<div class="tab-container">
 			<div class="ui top attached tabular menu">
 				<a class="item active" data-tab="first">Documents</a>
@@ -269,7 +282,12 @@
 			<div class="ui positive right labeled icon button">OK <i class="checkmark icon"></i> </div>
 		</div>
 	</div>
-
+<div class="ui inverted vertical footer segment" id="footer">
+    <div class="ui center aligned container">
+      <img src="./images/icon.png" class="ui centered mini image">
+      <span>Hadark</span>
+    </div>
+  </div>
 <script src="js/profile/basis.js"></script>
 <script src="js/profile/profile_service.js"></script>
 <script src="js/profile/profile_controller.js"></script>

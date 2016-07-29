@@ -3,11 +3,13 @@
 	<meta charset="UTF-8">
 	<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.js'></script>
+	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/homepage/homepage.js"></script>
 	<link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.css'>
 	<link rel="stylesheet" href="css/homepage/homepage.css">
 	<title>Hadark</title>
 </head>
+<body>
 <body>
 	<!-- 菜单栏 -->
 	<div class="ui inverted borderless menu" id="top"> 
@@ -50,11 +52,14 @@
 		          </div>
 		        </div>
 		        <div class="ui fluid large teal submit button login">登录</div>
+		        <div class="ui dimmer buttonloader">
+    				<div class="ui loader"></div>
+  				</div>
 		      </div>
 		      <div class="ui error message"></div>
 		    </form>
 		    <div class="ui message showLogon">
-		      已有账号? <a id="test">注册</a>
+		      已有账号? <a href="#">注册</a>
 		    </div>
 		  </div>
 		</div>
@@ -84,6 +89,9 @@
 		          </div>
 		        </div>
 		        <div class="ui fluid large teal submit button">注册</div>
+		        <div class="ui dimmer buttonloader">
+    				<div class="ui loader"></div>
+  				</div>
 		      </div>
 		      <div class="ui error message"></div>
 		    </form>
@@ -115,3 +123,5 @@
   </div>
 </body>
 </html>
+
+				

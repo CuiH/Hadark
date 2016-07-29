@@ -8,7 +8,7 @@ var CURRENT_URL_2 = "localhost"
 
 var TEST_AUTH = "hwb:hwb"
 
-var DEBUG = false
+var DEBUG = true
 
 // get file name from input_file
 function getFileName(filePath) {

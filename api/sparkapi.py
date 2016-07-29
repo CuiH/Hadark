@@ -6,7 +6,7 @@ import subprocess
 from random import choice
 
 
-class action:
+class SparkAPI:
 
     def __init__(self):
         """Constructor"""
