@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete, post_delete, pre_save
+from django.db.models.signals import pre_save, post_save, pre_delete, post_delete
 from django.dispatch import receiver
-from .basis import make_dir, delete_object
+from fs.basis import make_dir, delete_object
 # Create your models here.
 
 class File(models.Model):
@@ -74,6 +74,7 @@ def update_file_info(instance):
         instance.size = sum_size
     print(instance.name, instance.size)
 
+
 def get_home_dir(user):
     """
     Return the home File instance of a user
@@ -99,31 +100,6 @@ def create_user_dir(sender, instance, created, **kwargs):
         print(response)
 
 
-@receiver(pre_save, sender=File)
-def update_pre_save(sender, instance, **kwargs):
-    """
-    Recursively update size and modified
-    """
-    update_file_info(instance)
-
-@receiver(post_save, sender=File)
-def update_post_save(sender, instance, **kwargs):
-    """
-    Recursively update size and modified
-    """
-    if instance.parent is not None:
-        instance.parent.save()
-
-
-@receiver(post_delete, sender=File)
-def update_deleted(sender, instance, **kwargs):
-    """
-    Recursively update size and modified
-    """
-    parent = instance.parent
-    parent.save()
-
-
 @receiver(pre_delete, sender=User)
 def remove_user_dir(sender, instance, **kwargs):
     """
@@ -135,3 +111,31 @@ def remove_user_dir(sender, instance, **kwargs):
     response = delete_object(instance.username, home_dir.get_hdfs_path())
     print(response)
     home_dir.delete()
+
+
+@receiver(pre_save, sender=File)
+def update_pre_save(sender, instance, **kwargs):
+    """
+    Update size and modified
+    """
+    update_file_info(instance)
+
+
+@receiver(post_save, sender=File)
+def update_post_save(sender, instance, **kwargs):
+    """
+    Update parent File after instance is updated
+    """
+    if instance.parent is not None:
+        instance.parent.save()
+
+
+@receiver(post_delete, sender=File)
+def update_deleted(sender, instance, **kwargs):
+    """
+    Update parent File after instance is deleted
+    """
+    parent = instance.parent
+    parent.save()
+
+
