@@ -37,3 +37,23 @@
 #file_detail_modal {
 	font-size: 1.1em; 
 }
+
+body {
+	height: 100%;
+	background-color: rgb(221, 234, 251);
+}
+
+#mainContent {
+	height: 85%;
+	margin-top: 75px;
+	margin-bottom: -100px;
+}
+
+#footer {
+	background-color: rgba(120, 173, 239, 0.4);
+	height: 100px;
+}
+
+#top {
+	background-color: rgba(155, 196, 58, 0.4);	
+}

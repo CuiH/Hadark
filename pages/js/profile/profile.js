@@ -37,5 +37,17 @@ $(document).ready(function() {
 		$("#document_upload_name").val(getFileName($(this).val()))
 	})
 
-	
+
+
+
+	if (getCookie("username") == null) {
+		window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true";
+	} else {
+      $("#userName").text(getCookie("username"));
+  	}
+  	$("#logOut").click(function() {
+  		clearCookie("username");
+      	clearCookie("password");
+      	window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true";
+  	});
 })
