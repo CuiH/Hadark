@@ -27,6 +27,12 @@ window.onload = function() {
           //跳转主页面
         window.location.href = "http://" + CURRENT_URL_2 + "/profile";
   });
+  $("#feature").click(function() {
+      window.location.href = "http://" + CURRENT_URL_2 + "/feature";
+  });
+  ("#help").click(function() {
+      window.location.href = "http://" + CURRENT_URL_2 + "/help";
+  });
   $('#loginForm').form({
       on: 'blur',
       fields: {
