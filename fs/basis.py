@@ -4,6 +4,7 @@
 'A remote file system abstraction implementation based on webhdfs api'
 
 import json
+import re
 import requests
 
 
@@ -43,7 +44,9 @@ def open_file(username, remote_url):
         'user.name' : username,
     }
     response = requests.get(url, params=payload)
-    return response.text
+    pattern = re.compile(r'[^\r\n]*\r\n')
+    filter_text = pattern.sub("", response.text)
+    return filter_text
 
 
 def make_dir(username, remote_url):
