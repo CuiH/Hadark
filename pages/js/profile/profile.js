@@ -1,4 +1,15 @@
 $(document).ready(function() {
+	// check login
+	if (!DEBUG) {
+		if (getCookie("username") == null) {
+			window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true"
+		} else {
+			$("#userName").text(getCookie("username"))
+		}
+	} else {
+		$("#userName").text("debug")
+	}
+	
 	// init semantic
 	$('.menu .item').tab()
 	$('select.dropdown').dropdown()
@@ -37,17 +48,9 @@ $(document).ready(function() {
 		$("#document_upload_name").val(getFileName($(this).val()))
 	})
 
-
-
-
-	if (getCookie("username") == null) {
-		window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true";
-	} else {
-      $("#userName").text(getCookie("username"));
-  	}
-  	$("#logOut").click(function() {
-  		clearCookie("username");
-      	clearCookie("password");
-      	window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true";
-  	});
+	$("#logOut").click(function() {
+		clearCookie("username")
+		clearCookie("password")
+		window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true"
+	})
 })

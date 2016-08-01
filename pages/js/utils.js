@@ -1,4 +1,13 @@
-var CURRENT_URL_2 = "localhost";
+// api
+var CURRENT_URL = "172.18.231.84"
+
+// static
+var CURRENT_URL_2 = "localhost"
+
+var TEST_AUTH = "hwb:hwb"
+
+var DEBUG = true
+
 
 function setCookie(cname, cvalue, exdays = 0) {
     var d = new Date();

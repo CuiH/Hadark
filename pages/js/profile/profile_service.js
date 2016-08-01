@@ -2,6 +2,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 	return {
 		getAllJobs: function() {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -19,7 +20,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -27,6 +28,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		getJobById: function(job_id) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -44,7 +46,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -52,6 +54,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		deleteJobById: function(job_id) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -69,7 +72,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -77,6 +80,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		abortJobById: function(job_id) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -94,7 +98,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -102,6 +106,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		startJob: function(serialized_data) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -121,7 +126,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data["detail"])
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -129,6 +134,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		getHomeDir: function() {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -146,7 +152,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -154,6 +160,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		getSubFilesById: function(dir_id) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -174,7 +181,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -182,6 +189,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		uploadFile: function(formData) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -209,6 +217,9 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 				},
 				success: function(data) {
 					deferred.resolve(data)
+				},
+				error: function(data) {
+					deferred.reject(data["detail"])
 				}
 			})
 
@@ -217,6 +228,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		deleteFileById: function(file_id) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -234,7 +246,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
-
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise
@@ -242,6 +254,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 
 		getFileById: function(file_id) {
 			var auth = ""
+
 			if (!DEBUG) {
 				auth = checkLogin()
 			} else {
@@ -259,7 +272,34 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
+				deferred.reject(response.data["detail"])
+			})
 
+			return promise
+		},
+
+		getFileContent: function(file_path) {
+			var auth = ""
+
+			if (!DEBUG) {
+				auth = checkLogin()
+			} else {
+				auth = TEST_AUTH
+			}
+			
+			var deferred = $q.defer()
+			var promise = deferred.promise
+			$http({
+				method: "GET",
+				url: "http://" + CURRENT_URL + ":8000/file-api/",
+				params: {
+					"username": auth.split(":")[0],
+					"path": file_path
+				},
+			}).then(function successCallback(response) {
+				deferred.resolve(response.data)
+			}, function errorCallback(response) {
+				deferred.reject(response.data["detail"])
 			})
 
 			return promise

@@ -65,7 +65,7 @@
 								<td ng-if="file.file_type == 'DIR'" ng-click="ctrl.getSubFiles(false, false, file.name, file.pk)" style="cursor:pointer">
 									<i class="folder icon"></i> {{ file.name }}
 								</td>
-								<td ng-if="file.file_type == 'FILE'" ng-click="ctrl.getFile(file.pk)" style="cursor:pointer">
+								<td ng-if="file.file_type == 'FILE'" ng-click="ctrl.getFile(file.pk, file.hdfs_path)" style="cursor:pointer">
 									<i class="file outline icon"></i> {{ file.name }}
 								</td>
 								<td>{{ file.size }}</td>
@@ -215,7 +215,7 @@
 		<div id="result_modal_header" class="header">Result</div>
 		<div class="content">
 			<div class="ui segment force-remove-border add-margin-1">
-				<p id="result_modal_message"></p>
+				<p id="result_modal_message" style="font-size:1.2rem;"></p>
 				<div id="result_modal_loader" class="ui active inverted dimmer">
 					<div id="result_modal_loader_text" class="ui text loader">Starting</div>
 				</div>
@@ -275,19 +275,25 @@
 			<span ng-bind="ctrl.viewing_file.hdfs_path"></span>
 			<div class="ui divider"></div>
 			<p>
-				Content:
+				Content:<br/>
+				<span ng-bind-html='ctrl.viewing_file_content |trustHtml'>
+					{{ ctrl.viewing_file_content }}
+				</span>
 			</p>
 		</div>
 		<div class="actions">
 			<div class="ui positive right labeled icon button">OK <i class="checkmark icon"></i> </div>
 		</div>
 	</div>
-<div class="ui inverted vertical footer segment" id="footer">
-    <div class="ui center aligned container">
-      <img src="./images/icon.png" class="ui centered mini image">
-      <span>Hadark</span>
-    </div>
-  </div>
+
+	<div class="ui inverted vertical footer segment" id="footer">
+		<div class="ui center aligned container">
+			<img src="./images/icon.png" class="ui centered mini image">
+			<span>Hadark</span>
+		</div>
+	</div>
+
+<script src="js/utils.js"></script>
 <script src="js/profile/basis.js"></script>
 <script src="js/profile/profile_service.js"></script>
 <script src="js/profile/profile_controller.js"></script>

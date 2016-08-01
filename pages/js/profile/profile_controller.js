@@ -1,12 +1,20 @@
 profile.controller("profileController", ['$scope', 'profileService', function($scope, profileService) {
 	var self = this
 
+	// all jobs
 	self.jobs = []
+	// the job in job detail modal
 	self.viewing_job =  null
+	// all files in current folder
 	self.viewing_files = []
+	// path to current folder
 	self.locs = []
+	// current folder url (used in upload a file/create a folder)
 	self.current_parent_url = ""
+	// the file in file detail modal
 	self.viewing_file = null
+	// the conten of the viewing file
+	self.view_file_content = ""
 
 	self.getAllJobs = function() {
 		$("#job_dimmer").addClass('active')
@@ -35,7 +43,7 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 					$("#job_dimmer").removeClass('active')
 				},
 				function(error) {
-
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -53,7 +61,7 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 					$("#detail_modal_loader").removeClass('active')
 				},
 				function(error) {
-
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -70,8 +78,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 
 					self.getAllJobs()
 				},
-				function(data) {
-
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -88,8 +96,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 
 					self.getAllJobs()
 				},
-				function(data) {
-					
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -107,8 +115,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 
 					self.getAllJobs()
 				},
-				function(data) {
-					
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -120,8 +128,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 				function(data) {
 					self.getSubFiles(false, false, "home", data["pk"])
 				},
-				function(data) {
-					
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -155,8 +163,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 					
 					$("#document_dimmer").removeClass('active')
 				},
-				function(data) {
-					
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -176,8 +184,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 					// refresh
 					self.getSubFiles(false, true, "", -1)
 				},
-				function(data) {
-					
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
@@ -195,13 +203,13 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 					// refresh
 					self.getSubFiles(false, true, "", -1)
 				},
-				function(data) {
-					
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
 
-	self.getFile = function(file_id) {
+	self.getFile = function(file_id, file_path) {
 		$("#detail_modal_loader_2").addClass("active")
 
 		$("#file_detail_modal").modal("show")
@@ -211,10 +219,33 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 				function(data) {
 					self.viewing_file = data
 
-					$("#detail_modal_loader_2").removeClass('active')
+					self.getFileContent(file_path)
 				},
 				function(error) {
+					alterResultModal("Fail", error)
+				}
+			)
+	}
 
+	self.getFileContent = function(file_path) {
+		profileService.getFileContent(file_path)
+			.then(
+				function(data) {
+					data = JSON.stringify(data)
+					//data = data.split("\\r\\n\\r\\n")[1]
+					console.log(data)
+					data = data.replace(/\\r\\n/g, "<br/>")
+					data = data.replace(/\\n/g, "<br/>")
+					data = data.replace(/\\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;")
+
+					self.viewing_file_content = data
+
+					$("#detail_modal_loader_2").removeClass('active')
+					setTimeout('$("#file_detail_modal").modal("refresh")', 0)
+					
+				},
+				function(error) {
+					alterResultModal("Fail", error)
 				}
 			)
 	}
