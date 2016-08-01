@@ -1,4 +1,21 @@
 $(document).ready(function() {
+	var height = window.innerHeight - $("#mainContent").offset().top
+	$("#mainContent").css("min-height", height + "px")
+
+	$("#feature").click(function() {
+		window.location.href = "http://" + CURRENT_URL_2 + "/feature"
+	})
+
+	$("#help").click(function() {
+		window.location.href = "http://" + CURRENT_URL_2 + "/help";
+	})
+
+	$("#logOut").click(function() {
+		clearCookie("username")
+		clearCookie("password")
+		window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true"
+	})
+
 	// check login
 	if (!DEBUG) {
 		if (getCookie("username") == null) {
@@ -46,11 +63,5 @@ $(document).ready(function() {
 	// synchronize file_name field
 	$("#document_upload_file").change(function() {
 		$("#document_upload_name").val(getFileName($(this).val()))
-	})
-
-	$("#logOut").click(function() {
-		clearCookie("username")
-		clearCookie("password")
-		window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true"
 	})
 })

@@ -3,24 +3,22 @@
 <head>
 	<title>User Profile</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	
-	
+
 	<link href="http://cdn.bootcss.com/semantic-ui/2.1.8/semantic.css" rel="stylesheet">
 	<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 	<script src="http://cdn.bootcss.com/semantic-ui/2.1.8/semantic.js"></script>
 	<script src="http://cdn.bootcss.com/angular.js/1.5.8/angular.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
-	<link href="css/profile/profile.css" rel="stylesheet">
-
-</head>
+	<link href="css/profile/profile.css" rel="stylesheet"></head>
 
 <body ng-app="profileApp" ng-controller="profileController as ctrl">
 	<!-- 菜单栏 -->
-	<div class="ui inverted borderless menu" id="top"> 
+	<div class="ui inverted borderless menu" id="top">
 		<div class="ui container">
-			<a href="#" class="header item"><img src="./images/icon.png" class="ui centered mini image"></a>
-			<a href="#" class="item">查看信息</a>
-			<a href="#" class="item">帮助</a>
+			<a href="#" class="header item">
+				<img src="./images/icon.png" class="ui centered mini image"></a>
+			<a href="#" class="item" id="feature">查看信息</a>
+			<a href="#" class="item" id="help">帮助</a>
 			<div class="right menu" id="name-nav">
 				<a class="right item" id="userName">用户名</a>
 				<a class="right item" id="logOut">退出</a>
@@ -38,15 +36,14 @@
 					<div id="document_dimmer" class="ui active inverted dimmer">
 						<div class="ui medium text loader">Loading</div>
 					</div>
-					
+
 					<table class="ui table">
 						<thead>
 							<tr>
 								<th colspan="4">
-									Your Location: 
+									Your Location:
 									<div style="margin-left: 10px;"class="ui breadcrumb">
-										<ng-repeat ng-repeat="loc in ctrl.locs">
-											<i ng-if="!$first" class="right chevron icon divider"></i>
+										<ng-repeat ng-repeat="loc in ctrl.locs"> <i ng-if="!$first" class="right chevron icon divider"></i>
 											<a ng-if="$last == false" ng-click="ctrl.getSubFiles(true, false, loc.name, loc.id)" class="section">{{ loc.name }}</a>
 											<div ng-if="$last == true" class="active section">{{ loc.name }}</div>
 										</ng-repeat>
@@ -62,8 +59,8 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="file in ctrl.viewing_files">
-								<td ng-if="file.file_type == 'DIR'" ng-click="ctrl.getSubFiles(false, false, file.name, file.pk)" style="cursor:pointer">
-									<i class="folder icon"></i> {{ file.name }}
+								<td ng-if="file.file_type == 'DIR'" ng-click="ctrl.getSubFiles(false, false, file.name, file.pk)" style="cursor:pointer"> <i class="folder icon"></i>
+									{{ file.name }}
 								</td>
 								<td ng-if="file.file_type == 'FILE'" ng-click="ctrl.getFile(file.pk, file.hdfs_path)" style="cursor:pointer">
 									<i class="file outline icon"></i> {{ file.name }}
@@ -73,14 +70,23 @@
 								<td>
 									<div  class="right floated red ui small button" ng-click="ctrl.deleteFile(file.pk)">Delete</div>
 								</td>
-							</tr> 
+							</tr>
 						</tbody>
 						<tfoot class="full-width">
 							<tr>
 								<th colspan="4">
-									<div id="upload_document" class="ui right floated small primary labeled icon button"><i class="file icon"></i>Upload a File</div>
-									<div id="create_folder" class="ui right floated small olive labeled icon button"><i class="folder open outline icon"></i>Create a Folder</div>
-									<div  class="ui right floated small teal labeled icon button" ng-click="ctrl.getSubFiles(false, true, '', -1)"><i class="refresh icon"></i> Refresh</div>
+									<div id="upload_document" class="ui right floated small primary labeled icon button">
+										<i class="file icon"></i>
+										Upload a File
+									</div>
+									<div id="create_folder" class="ui right floated small olive labeled icon button">
+										<i class="folder open outline icon"></i>
+										Create a Folder
+									</div>
+									<div  class="ui right floated small teal labeled icon button" ng-click="ctrl.getSubFiles(false, true, '', -1)">
+										<i class="refresh icon"></i>
+										Refresh
+									</div>
 								</th>
 							</tr>
 						</tfoot>
@@ -105,7 +111,8 @@
 						</thead>
 						<tbody id="job_body">
 							<tr ng-repeat="job in ctrl.jobs">
-								<td><b>{{ job.name }}</b></td>
+								<td> <b>{{ job.name }}</b>
+								</td>
 								<td>{{ job.start_time | date: 'medium': '+8000' }}</td>
 								<td>{{ job.end_time | date: 'medium': '+8000' }}</td>
 								<td>
@@ -124,8 +131,14 @@
 						<tfoot class="full-width">
 							<tr>
 								<th colspan="6">
-									<div id="start_job" class="ui right floated small primary labeled icon button"><i class="tasks icon"></i> Start a Job</div>
-									<div  class="ui right floated small teal labeled icon button" ng-click="ctrl.getAllJobs()"><i class="refresh icon"></i> Refresh</div>
+									<div id="start_job" class="ui right floated small primary labeled icon button">
+										<i class="tasks icon"></i>
+										Start a Job
+									</div>
+									<div  class="ui right floated small teal labeled icon button" ng-click="ctrl.getAllJobs()">
+										<i class="refresh icon"></i>
+										Refresh
+									</div>
 								</th>
 							</tr>
 						</tfoot>
@@ -134,47 +147,44 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div id="document_upload_form_modal"class="ui small test modal">
-		<div class="header">Upload a Document </div>
+		<div class="header">Upload a Document</div>
 		<div class="content">
 			<form id="document_upload_form" class="ui form">
 				<div class="field" id="document_upload_file_div">
 					<label>File</label>
-					<input type="file" name="file_uploaded" id="document_upload_file">
-				</div>
+					<input type="file" name="file_uploaded" id="document_upload_file"></div>
 				<div class="field">
 					<label>Name</label>
-					<input id="document_upload_name" type="text" name="name" placeholder="File Name">
-				</div>
+					<input id="document_upload_name" type="text" name="name" placeholder="File Name"></div>
 				<div class="field" hidden="">
 					<label>File Type</label>
-					<input type="text" name="file_type" value="FILE" id="document_upload_type" readonly="">
-				</div>
+					<input type="text" name="file_type" value="FILE" id="document_upload_type" readonly=""></div>
 				<div class="field" hidden="">
 					<label>Permission</label>
-					<input type="text" name="permision" value="none" readonly="">
-				</div>
+					<input type="text" name="permision" value="none" readonly=""></div>
 				<div class="field" hidden="">
 					<label>Parent</label>
-					<input ng-value="ctrl.current_parent_url" type="text" name="parent" value="" readonly="">
-				</div>
+					<input ng-value="ctrl.current_parent_url" type="text" name="parent" value="" readonly=""></div>
 			</form>
 		</div>
 		<div class="actions">
 			<div class="ui negative button" >Cancel</div>
-			<div class="ui positive right labeled icon button" ng-click="ctrl.uploadFile()">Upload <i class="checkmark icon"></i> </div>
+			<div class="ui positive right labeled icon button" ng-click="ctrl.uploadFile()">
+				Upload
+				<i class="checkmark icon"></i>
+			</div>
 		</div>
 	</div>
 
 	<div id="job_start_form_modal"class="ui small test modal">
-		<div class="header">Start a Job </div>
+		<div class="header">Start a Job</div>
 		<div class="content">
 			<form id="job_start_form" class="ui form">
 				<div class="field">
 					<label>Name</label>
-					<input type="text" name="name" placeholder="Job Name">
-				</div>
+					<input type="text" name="name" placeholder="Job Name"></div>
 				<div class="field">
 					<label>Description</label>
 					<textarea rows="2" name="description" placeholder="Job Description"></textarea>
@@ -185,13 +195,15 @@
 				</div>
 				<div class="field">
 					<label>Code File Id</label>
-					<input type="text" name="code_files" placeholder="The id of your file" value="19">
-				</div>
+					<input type="text" name="code_files" placeholder="The id of your file" value="19"></div>
 			</form>
 		</div>
 		<div class="actions">
 			<div class="ui negative button" >Cancel</div>
-			<div class="ui positive right labeled icon button" ng-click="ctrl.startJob()">Start <i class="checkmark icon"></i> </div>
+			<div class="ui positive right labeled icon button" ng-click="ctrl.startJob()">
+				Start
+				<i class="checkmark icon"></i>
+			</div>
 		</div>
 	</div>
 
@@ -207,7 +219,7 @@
 			<p id="progress_modal_message"></p>
 		</div>
 		<div class="actions">
-			<div id="progress_modal_button" class="ui positive right labeled icon button">Do in Background </div>
+			<div id="progress_modal_button" class="ui positive right labeled icon button">Do in Background</div>
 		</div>
 	</div>
 
@@ -222,7 +234,10 @@
 			</div>
 		</div>
 		<div class="actions">
-			<div id="result_modal_button" class="ui positive right labeled icon button">Do in Background <i class="checkmark icon"></i> </div>
+			<div id="result_modal_button" class="ui positive right labeled icon button">
+				Do in Background
+				<i class="checkmark icon"></i>
+			</div>
 		</div>
 	</div>
 
@@ -253,7 +268,10 @@
 			<span ng-bind="ctrl.viewing_job.code_files[0].hdfs_path">loading...</span>
 		</div>
 		<div class="actions">
-			<div class="ui positive right labeled icon button">OK <i class="checkmark icon"></i> </div>
+			<div class="ui positive right labeled icon button">
+				OK
+				<i class="checkmark icon"></i>
+			</div>
 		</div>
 	</div>
 
@@ -282,7 +300,16 @@
 			</p>
 		</div>
 		<div class="actions">
-			<div class="ui positive right labeled icon button">OK <i class="checkmark icon"></i> </div>
+			<div class="ui positive right labeled icon button">
+				OK
+				<i class="checkmark icon"></i>
+			</div>
+		</div>
+	</div>
+	<div class="ui inverted vertical footer segment" id="footer">
+		<div class="ui center aligned container">
+			<img src="./images/icon.png" class="ui centered mini image">
+			<span>Hadark</span>
 		</div>
 	</div>
 
@@ -293,11 +320,11 @@
 		</div>
 	</div>
 
-<script src="js/utils.js"></script>
-<script src="js/profile/basis.js"></script>
-<script src="js/profile/profile_service.js"></script>
-<script src="js/profile/profile_controller.js"></script>
-<script src="js/profile/profile.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/profile/basis.js"></script>
+	<script src="js/profile/profile_service.js"></script>
+	<script src="js/profile/profile_controller.js"></script>
+	<script src="js/profile/profile.js"></script>
 
 </body>
 </html>
