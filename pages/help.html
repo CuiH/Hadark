@@ -1,0 +1,258 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.js'></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/homepage/homepage.js"></script>
+	<link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.css'>
+	<link href="css/profile/profile.css" rel="stylesheet">
+	<link href="css/other/help.css" rel="stylesheet">
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/homepage/homepage.js"></script>
+	<script type="text/javascript" src="js/other/help.js"></script>
+	<title>Help</title>
+</head>
+<body>
+	<!-- 菜单栏 -->
+	<div class="ui inverted borderless menu" id="top">
+		<div class="ui container">
+			<a href="#" class="header item">
+				<img src="./images/icon.png" class="ui centered mini image"></a>
+			<a href="#" class="item" id="goback">返回</a>
+			<a href="#" class="item" id="feature">查看信息</a>
+			<div class="right menu" id="main-nav">
+				<a class="right item showLogin">登陆</a>
+				<a class="right item showLogon">注册</a>
+			</div>
+			<div class="right menu" id="name-nav">
+				<a class="right item" id="userName">用户名</a>
+				<a class="right item" id="logOut">退出</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui modal" id="logIn">
+		<div class="ui middle aligned center aligned grid">
+			<div class="column">
+				<h2 class="ui teal image header">
+					<img src="./images/icon.png" class="image">
+					<div class="content">登录您的帐号</div>
+				</h2>
+				<form class="ui large form" id="loginForm">
+					<div class="ui stacked segment">
+						<div class="field">
+							<div class="ui left icon input"> <i class="user icon"></i>
+								<input type="text" name="username" id="loginUser" placeholder="用户名/邮箱"></div>
+						</div>
+						<div class="field">
+							<div class="ui left icon input"> <i class="lock icon"></i>
+								<input type="password" name="password" id="loginPw" placeholder="密码"></div>
+						</div>
+						<div class="ui fluid large teal submit button login">登录</div>
+						<div class="ui dimmer buttonloader">
+							<div class="ui loader"></div>
+						</div>
+					</div>
+					<div class="ui error message"></div>
+				</form>
+				<div class="ui message showLogon">
+					已有账号?
+					<a href="#">注册</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ui modal" id="logOn">
+		<div class="ui middle aligned center aligned grid">
+			<div class="column">
+				<h2 class="ui teal image header">
+					<img src="./images/icon.png" class="image">
+					<div class="content">注册新的账号</div>
+				</h2>
+				<form class="ui large form" id="logonForm">
+					<div class="ui stacked segment">
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="user icon"></i>
+								<input type="text" name="username" id="logonUser"placeholder="用户名/邮箱"></div>
+						</div>
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="lock icon"></i>
+								<input type="password" name="password" id="logonPw" placeholder="密码"></div>
+						</div>
+						<div class="ui fluid large teal submit button">注册</div>
+						<div class="ui dimmer buttonloader">
+							<div class="ui loader"></div>
+						</div>
+					</div>
+					<div class="ui error message"></div>
+				</form>
+				<div class="ui message showLogin">
+					没有帐号?
+					<a href="#">登录</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id='main'>
+		<div class="ui left aligned page grid" id="mainMenu">
+			<div class="ui vertical inverted menu left overlay visible" id="toc">
+				<div class="item">
+					<a class="ui logo icon mini image" href="#">
+						<img src="./images/icon.png"></a>
+					<a href="#"> <b>帮助</b>
+					</a>
+				</div>
+				<div class="item">
+					<div class="header">开启一个Job</div>
+					<div class="menu">
+						<a class="item" href="#login">登录系统</a>
+						<a class="item" href="#upload">上传文件</a>
+						<a class="item" href="#submit">提交Job</a>
+						<a class="item" href="#status">查看Job状态</a>
+						<a class="item" href="#content">查看Job结果</a>
+					</div>
+				</div>
+				<div class="item">
+					<div class="header">Job状态说明</div>
+					<div class="menu">
+						<a class="item" href="#staring">staring</a>
+						<a class="item" href="#accepted">accepted</a>
+						<a class="item" href="#failed">failed</a>
+						<a class="item" href="#running">running</a>
+						<a class="item" href="#killing">killing</a>
+						<a class="item" href="#killed">killed</a>
+						<a class="item" href="#finished">finished</a>
+						<a class="item" href="#ps">特别说明</a>
+					</div>
+				</div>
+				<div class="item">
+					<div class=" header">关于我们</div>
+					<div class="menu">
+						<a class="item" href="#github">联系方式</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui grid" id="mainContent">
+			<div class="ten wide column">
+				<div class="ui segment" id="login">
+					<h1>登陆系统</h1>
+					<img class="ui centered Huge image" src="./images/homepage_help.png">
+					<p>
+						点击右上角登录按钮，弹出登录页面。
+					</p>
+					<p>
+						输入用户名密码进行登录。
+					</p>
+				</div>
+
+				<div class="ui segment" id="upload">
+					<h1>上传文件</h1>
+					<img class="ui centered Huge image" src="./images/homepage_help.png">
+					<p>
+						点击右上角登录按钮，弹出登录页面。
+					</p>
+					<p>
+						输入用户名密码进行登录。
+					</p>
+				</div>
+
+				<div class="ui segment" id="submit">
+					<h1>提交Job</h1>
+					<img class="ui centered Huge image" src="./images/homepage_help.png">
+					<p>
+						点击右上角登录按钮，弹出登录页面。
+					</p>
+					<p>
+						输入用户名密码进行登录。
+					</p>
+				</div>
+				<div class="ui segment" id="status">
+					<h1>查看Job状态</h1>
+					<img class="ui centered Huge image" src="./images/homepage_help.png">
+					<p>
+						点击右上角登录按钮，弹出登录页面。
+					</p>
+					<p>
+						输入用户名密码进行登录。
+					</p>
+				</div>
+				<div class="ui segment" id="content">
+					<h1>查看Job结果</h1>
+					<img class="ui centered Huge image" src="./images/homepage_help.png">
+					<p>
+						点击右上角登录按钮，弹出登录页面。
+					</p>
+					<p>
+						输入用户名密码进行登录。
+					</p>
+				</div>
+				<div class="ui segment" id="starting">
+					<h1>Job状态说明-starting</h1>
+					<p>
+						正在创建Job
+					</p>
+				</div>
+				<div class="ui segment" id="accepted">
+					<h1>Job状态说明-accepted</h1>
+					<p>
+						创建完毕,等待分配计算资源
+					</p>
+				</div>
+				<div class="ui segment" id="failed">
+					<h1>Job状态说明-failed</h1>
+					<p>
+						Job执行失败,可查看错误信息
+					</p>
+				</div>
+				<div class="ui segment" id="running">
+					<h1>Job状态说明-running</h1>
+					<p>
+						Job执行中
+					</p>
+				</div>
+				<div class="ui segment" id="killing">
+					<h1>Job状态说明-killing</h1>
+					<p>
+						Job终止中
+					</p>
+				</div>
+				<div class="ui segment" id="killed">
+					<h1>Job状态说明-killed</h1>
+					<p>
+						Job已终止
+					</p>
+				</div>
+				<div class="ui segment" id="finished">
+					<h1>Job状态说明-finished</h1>
+					<p>
+						Job执行成功,可查看结果
+					</p>
+				</div>
+				<div class="ui segment" id="ps">
+					<h1>特别说明</h1>
+					<p>
+						当Job处于staring, acceptd, running三个状态时可提交申请终止
+					</p>
+				</div>
+				<div class="ui segment" id="github">
+					<h1>联系方式</h1>
+					<p>
+						Github地址: https://github.com/CuiH/Hadark
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui inverted vertical footer segment" id="footer">
+		<div class="ui center aligned container">
+			<img src="./images/icon.png" class="ui centered mini image">
+			<span>Hadark</span>
+		</div>
+	</div>
+</body>
+</html>
