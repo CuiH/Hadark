@@ -50,4 +50,12 @@ $(document).ready(function() {
       	clearCookie("password");
       	window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true";
   	});
+  	var height = window.innerHeight - $("#mainContent").offset().top;
+  	$("#mainContent").css("min-height", height + "px");
+  	$("#feature").click(function() {
+      	window.location.href = "http://" + CURRENT_URL_2 + "/feature";
+  	});
+  	$("#help").click(function() {
+      	window.location.href = "http://" + CURRENT_URL_2 + "/help";
+  	});
 })

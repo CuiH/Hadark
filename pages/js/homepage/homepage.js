@@ -30,7 +30,7 @@ window.onload = function() {
   $("#feature").click(function() {
       window.location.href = "http://" + CURRENT_URL_2 + "/feature";
   });
-  ("#help").click(function() {
+  $("#help").click(function() {
       window.location.href = "http://" + CURRENT_URL_2 + "/help";
   });
   $('#loginForm').form({
@@ -129,4 +129,6 @@ window.onload = function() {
         });
       }
     });
+    var h = window.innerHeight - $("#main").offset().top;
+    $("#main").css("max-height", h   + "px");
 }

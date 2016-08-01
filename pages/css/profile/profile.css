@@ -39,14 +39,11 @@
 }
 
 body {
-	height: 100%;
 	background-color: rgb(221, 234, 251);
 }
 
 #mainContent {
-	height: 87%;
 	margin-top: 75px;
-	margin-bottom: -100px;
 }
 
 #footer {
