@@ -64,9 +64,9 @@ class JobList(APIView):
 		new_job = self.perform_create(serializer)
 		file_path = 'hdfs://' + new_job.code_files.all()[0].get_hdfs_path()
 
-		# start a spark job
+		# start a spark job, org.apache.spark.examples.SparkPi
 		sa = SparkAPI()
-		job_id = sa.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '6', file_path, '1000')
+		job_id = sa.submitJob(new_job.main_class, '4g', '4g', '6', file_path, '1000')
 
 		# update job  in db with status 'ACCEPTED'
 		new_job.update_partially(spark_job_id=job_id, status='ACCEPTED')

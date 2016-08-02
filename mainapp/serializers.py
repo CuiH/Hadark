@@ -13,7 +13,7 @@ class CodeFileSerializer1(serializers.ModelSerializer):
 	
 	class Meta:
 		model = File
-		fields = ('id', 'name', 'size', 'hdfs_path')
+		fields = ('id', 'size', 'hdfs_path')
 
 	def get_hdfs_path(self, obj):
 		"""
@@ -45,7 +45,7 @@ class JobSerializer2(serializers.ModelSerializer):
 
 	class Meta:
 		model = Job
-		fields = ('id', 'name', 'owner', 'start_time', 'status', 'description', 'parameters', 'spark_job_id', 'code_files')
+		fields = ('id', 'name', 'owner', 'start_time', 'status', 'description',  'main_class', 'parameters', 'spark_job_id', 'code_files')
 
 	def create(self, validated_data):
 		file_id = validated_data.pop("code_files")
@@ -66,7 +66,7 @@ class JobSerializer3(serializers.ModelSerializer):
 
 	class Meta:
 		model = Job
-		fields = ('id', 'name', 'start_time', 'end_time', 'status', 'description', 'parameters', 'code_files', 'result')
+		fields = ('id', 'name', 'start_time', 'end_time', 'status', 'description', 'main_class', 'parameters', 'code_files', 'result')
 
 	def get_result(self, obj):
 		if obj.status in ["FINISHED", "FAILED"]:

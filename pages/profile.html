@@ -188,10 +188,15 @@
 			<form id="job_start_form" class="ui form">
 				<div class="field">
 					<label>Name</label>
-					<input type="text" name="name" placeholder="Job Name"></div>
+					<input type="text" name="name" placeholder="Job Name">
+				</div>
 				<div class="field">
 					<label>Description</label>
 					<textarea rows="2" name="description" placeholder="Job Description"></textarea>
+				</div>
+				<div class="field">
+					<label>Main Class</label>
+					<input type="text" name="main_class" placeholder="The class that contains the main() method">
 				</div>
 				<div class="field">
 					<label>Parameters</label>
@@ -199,7 +204,8 @@
 				</div>
 				<div class="field">
 					<label>Code File Id</label>
-					<input type="text" name="code_files" placeholder="The id of your file"></div>
+					<input type="text" name="code_files" placeholder="The id of your file">
+				</div>
 			</form>
 		</div>
 		<div class="actions">
@@ -264,6 +270,9 @@
 			<div class="ui divider"></div>
 			<div class="ui teal horizontal label">Status</div>
 			<span ng-bind="ctrl.viewing_job.status">loading...</span>
+			<div class="ui divider"></div>
+			<div class="ui teal horizontal label">Main Class</div>
+			<span ng-bind="ctrl.viewing_job.main_class">loading...</span>
 			<div class="ui divider"></div>
 			<div class="ui teal horizontal label">Parameters</div>
 			<span ng-bind="ctrl.viewing_job.parameters">loading...</span>

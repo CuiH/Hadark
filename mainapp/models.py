@@ -18,6 +18,7 @@ class Job(models.Model):
 	description = models.CharField(max_length=250, null=True)
 	spark_job_id = models.CharField(max_length=100)
 	owner = models.ForeignKey('auth.User', related_name="jobs")
+	main_class = models.CharField(max_length=150)
 	parameters = models.CharField(max_length=230, null=True)
 	code_files = models.ManyToManyField(File)
 
