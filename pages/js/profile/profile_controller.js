@@ -13,8 +13,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 	self.current_parent_url = ""
 	// the file in file detail modal
 	self.viewing_file = null
-	// the conten of the viewing file
-	self.view_file_content = ""
+	// the content of the viewing file
+	self.viewing_file_content = ""
 
 	self.getAllJobs = function() {
 		$("#job_dimmer").addClass('active')
@@ -33,7 +33,7 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 
 						if (data[i]["status"] == "FINISHED" || data[i]["status"] == "FAILED" || data[i]["status"] == "KILLED") {
 							data[i]["status_num_2"] = 1;
-						} else if (data[i]["status"] != "KILLING") {
+						} else if (data[i]["status"] != "KILLING" && data[i]["status"] != "STARTING") {
 							data[i]["status_num_2"] = 0;
 						}
 					}
@@ -56,12 +56,18 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 		profileService.getJobById(job_id)
 			.then(
 				function(data) {
+					console.log(data)
+
 					self.viewing_job = data
 
 					$("#detail_modal_loader").removeClass('active')
+
+					setTimeout('$("#job_detail_modal").modal("refresh")', 0)
 				},
 				function(error) {
 					alterResultModal("Fail", error)
+
+					setTimeout('$("#job_detail_modal").modal("refresh")', 0)
 				}
 			)
 	}
@@ -179,13 +185,13 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 		profileService.uploadFile(formData)
 			.then(
 				function(data) {
-					alterProgressModal()
+					alterProgressModal("Success", "The file has been uploaded successfully")
 
 					// refresh
 					self.getSubFiles(false, true, "", -1)
 				},
 				function(error) {
-					alterResultModal("Fail", error)
+					alterProgressModal("Fail", error)
 				}
 			)
 	}
@@ -219,6 +225,16 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 				function(data) {
 					self.viewing_file = data
 
+					if (data["size"] > 10000000) {
+						self.viewing_file_content = "The file is too large, so it won't be shown."
+
+						$("#detail_modal_loader_2").removeClass('active')
+						
+						setTimeout('$("#file_detail_modal").modal("refresh")', 0)
+
+						return
+					}
+
 					self.getFileContent(file_path)
 				},
 				function(error) {
@@ -231,18 +247,11 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 		profileService.getFileContent(file_path)
 			.then(
 				function(data) {
-					data = JSON.stringify(data)
-					//data = data.split("\\r\\n\\r\\n")[1]
-					console.log(data)
-					data = data.replace(/\\r\\n/g, "<br/>")
-					data = data.replace(/\\n/g, "<br/>")
-					data = data.replace(/\\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;")
-
 					self.viewing_file_content = data
 
 					$("#detail_modal_loader_2").removeClass('active')
-					setTimeout('$("#file_detail_modal").modal("refresh")', 0)
 					
+					setTimeout('$("#file_detail_modal").modal("refresh")', 0)
 				},
 				function(error) {
 					alterResultModal("Fail", error)

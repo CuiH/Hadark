@@ -5,7 +5,7 @@ import datetime
 from django.db import models
 from django.utils.timezone import utc
 
-from almee.action import action
+from api.sparkapi import SparkAPI
 
 from fs.models import File
 
@@ -30,8 +30,8 @@ class Job(models.Model):
 	def check_status(self):
 		old_status = self.status
 		if old_status in ["ACCEPTED", "RUNNING", "KILLING"]:
-			ac = action()
-			new_status = ac.getStatus(self.spark_job_id)['State']
+			sa = SparkAPI()
+			new_status = sa.getStatus(self.spark_job_id)['State']
 			if old_status != new_status:
 				self.update_partially(status=new_status)
 				if new_status in ["FAILED", "FINISHED"]:

@@ -154,19 +154,23 @@
 			<form id="document_upload_form" class="ui form">
 				<div class="field" id="document_upload_file_div">
 					<label>File</label>
-					<input type="file" name="file_uploaded" id="document_upload_file"></div>
+					<input type="file" name="file_uploaded" id="document_upload_file">
+				</div>
 				<div class="field">
 					<label>Name</label>
-					<input id="document_upload_name" type="text" name="name" placeholder="File Name"></div>
+					<input id="document_upload_name" type="text" name="name" placeholder="File Name">
+				</div>
 				<div class="field" hidden="">
 					<label>File Type</label>
-					<input type="text" name="file_type" value="FILE" id="document_upload_type" readonly=""></div>
+					<input type="text" name="file_type" value="FILE" id="document_upload_type" readonly="">
+				</div>
 				<div class="field" hidden="">
 					<label>Permission</label>
 					<input type="text" name="permision" value="none" readonly=""></div>
 				<div class="field" hidden="">
 					<label>Parent</label>
-					<input ng-value="ctrl.current_parent_url" type="text" name="parent" value="" readonly=""></div>
+					<input ng-value="ctrl.current_parent_url" type="text" name="parent" value="" readonly="">
+				</div>
 			</form>
 		</div>
 		<div class="actions">
@@ -195,7 +199,7 @@
 				</div>
 				<div class="field">
 					<label>Code File Id</label>
-					<input type="text" name="code_files" placeholder="The id of your file" value="19"></div>
+					<input type="text" name="code_files" placeholder="The id of your file"></div>
 			</form>
 		</div>
 		<div class="actions">
@@ -208,7 +212,7 @@
 	</div>
 
 	<div id="document_upload_progress_modal" class="ui small test modal">
-		<div id="progress_modal_header" class="header">Result</div>
+		<div id="progress_modal_header" class="header"></div>
 		<div class="content">
 			<div id="progress_modal_bar" class="ui progress">
 				<div class="bar">
@@ -216,7 +220,7 @@
 				</div>
 				<div id="progress_modal_bar_message" class="label">Uploading to Server</div>
 			</div>
-			<p id="progress_modal_message"></p>
+			<p id="progress_modal_message" style="font-size:1.2rem;  margin-top:20px; margin-bottom:30px;"></p>
 		</div>
 		<div class="actions">
 			<div id="progress_modal_button" class="ui positive right labeled icon button">Do in Background</div>
@@ -266,6 +270,17 @@
 			<div class="ui divider"></div>
 			<div class="ui teal horizontal label">Code File</div>
 			<span ng-bind="ctrl.viewing_job.code_files[0].hdfs_path">loading...</span>
+			<div class="ui divider"></div>
+			<div class="ui teal horizontal label">Result</div> <br/>
+			<div style="margin-top: 10px; margin-left: 6px;">
+				<ng-repeat ng-repeat="(key, value) in ctrl.viewing_job.result">
+					<i>- {{ key }}</i> <br/>
+					<pre>
+						{{ value }}
+					</pre>
+				</ng-repeat>
+			</div>
+			<pre  ng-bind-html='ctrl.viewing_job_result | trustHtml'></pre>
 		</div>
 		<div class="actions">
 			<div class="ui positive right labeled icon button">
@@ -292,24 +307,14 @@
 			<div class="ui teal horizontal label">Path</div>
 			<span ng-bind="ctrl.viewing_file.hdfs_path"></span>
 			<div class="ui divider"></div>
-			<p>
-				Content:<br/>
-				<span ng-bind-html='ctrl.viewing_file_content |trustHtml'>
-					{{ ctrl.viewing_file_content }}
-				</span>
-			</p>
+			<div class="ui teal horizontal label">Content</div> <br/>
+			<pre style="margin-top: 10px; margin-left: 6px;" ng-bind-html='ctrl.viewing_file_content | trustHtml'></pre>
 		</div>
 		<div class="actions">
 			<div class="ui positive right labeled icon button">
 				OK
 				<i class="checkmark icon"></i>
 			</div>
-		</div>
-	</div>
-	<div class="ui inverted vertical footer segment" id="footer">
-		<div class="ui center aligned container">
-			<img src="./images/icon.png" class="ui centered mini image">
-			<span>Hadark</span>
 		</div>
 	</div>
 

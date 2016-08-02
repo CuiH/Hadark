@@ -33,10 +33,10 @@ $(document).ready(function() {
 
 	// show the upload_document modal
 	$("#upload_document").click(function() {
+		$("#document_upload_file_div").removeAttr("hidden")
 		$("#document_upload_type").val("FILE")
 		$("#document_upload_name").val("")
-		$("#document_upload_file_div").removeAttr("hidden")
-
+		
 		$('#document_upload_form_modal').modal({
 			blurring: true
 		}).modal('show')

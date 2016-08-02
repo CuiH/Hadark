@@ -67,7 +67,19 @@ class FileViewSet(viewsets.ModelViewSet):
         size = 0
         data = serializer.validated_data
 
+        if data["name"] == "":
+            raise serializers.ValidationError({
+                'name': "can not be empty"
+            })
+
         if data['file_type'] == 'FILE':
+            t_file = self.request.FILES['file_uploaded']
+            
+            if t_file is None:
+                raise serializers.ValidationError({
+                    'file_uploaded': "please upload a file"
+                })
+
             size = self.request.FILES['file_uploaded'].size
 
         instance = serializer.save(owner=self.request.user, modified=timezone.now(), size=size)

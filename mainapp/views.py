@@ -10,10 +10,10 @@ from django.utils.timezone import utc
 from django.contrib.auth import authenticate
 
 from mainapp.models import Job, Result
-from mainapp.serializers import JobSerializer1, JobSerializer2
+from mainapp.serializers import JobSerializer1, JobSerializer2, JobSerializer3
 from mainapp.permissions import IsOwner
 
-from almee.action import action
+from api.sparkapi import SparkAPI
 
 from fs.models import File
 
@@ -30,8 +30,8 @@ class JobList(APIView):
 
 		# update from spark
 		for job in jobs:
-			# job.check_status()
-			pass
+			job.check_status()
+			# pass
 					
 		serializer = JobSerializer1(jobs, many=True)
 
@@ -62,12 +62,11 @@ class JobList(APIView):
 
 		# insert into db with status 'starting'
 		new_job = self.perform_create(serializer)
-		job_id = 0
+		file_path = 'hdfs://' + new_job.code_files.all()[0].get_hdfs_path()
 
 		# start a spark job
-		# ac = action()
-		# s_id = ac.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '6', 'hdfs:///spark-examples-1.6.2-hadoop2.2.0.jar', '1000')
-		# job_id = s_id
+		sa = SparkAPI()
+		job_id = sa.submitJob('org.apache.spark.examples.SparkPi', '4g', '4g', '6', file_path, '1000')
 
 		# update job  in db with status 'ACCEPTED'
 		new_job.update_partially(spark_job_id=job_id, status='ACCEPTED')
@@ -102,7 +101,7 @@ class JobDetail(APIView):
 			# update from spark
 			job.check_status()
 
-			serializer = JobSerializer1(job)
+			serializer = JobSerializer3(job)
 
 			return Response({"detail": serializer.data})
 
@@ -114,13 +113,13 @@ class JobDetail(APIView):
 		job = self.get_object(pk)
 		if job is not None:
 			# check status
-			if job.status in ["KILLING", "KILLED", "FINISHED", "FAILED"]:
+			if job.status in ["STARTING", "KILLING", "KILLED", "FINISHED", "FAILED"]:
 				return Response({"detail": "you can not abort this job"},
 					status=status.HTTP_400_BAD_REQUEST)
 
 			# abort in spark
-			# ac = action()
-			# ac.killApplicationById(job.spark_job_id)
+			sa = SparkAPI()
+			sa.killApplicationById(job.spark_job_id)
 
 			# update db with status "KILLING"
 			now_time = datetime.datetime.utcnow().replace(tzinfo=utc)

@@ -219,7 +219,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 					deferred.resolve(data)
 				},
 				error: function(data) {
-					deferred.reject(data["detail"])
+					deferred.reject(data["responseJSON"])
 				}
 			})
 
@@ -297,9 +297,9 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 					"path": file_path
 				},
 			}).then(function successCallback(response) {
-				deferred.resolve(response.data)
+				deferred.resolve(response.data["content"])
 			}, function errorCallback(response) {
-				deferred.reject(response.data["detail"])
+				deferred.reject("error")
 			})
 
 			return promise

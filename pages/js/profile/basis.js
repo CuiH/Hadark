@@ -62,15 +62,17 @@ function initProgressModal() {
 	});
 	
 	$("#progress_modal_bar").css("display", "")
+	$("#progress_modal_header").text("Uploading")
 	$("#progress_modal_bar_message").text("Uploading to Server")
 	$("#progress_modal_message").text("")
 	$("#progress_modal_button").html('Do in Background<i class="mail forward icon"></i>')
 }
 
 // alter the progress modal
-function alterProgressModal() {
+function alterProgressModal(title, message) {
 	$("#progress_modal_bar").css("display", "none")
-	$("#progress_modal_message").text("Success!")
+	$("#progress_modal_header").text(title)
+	$("#progress_modal_message").text(JSON.stringify(message))
 	$("#progress_modal_button").html('OK<i class="checkmark icon"></i>')
 }
 
