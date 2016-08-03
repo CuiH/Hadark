@@ -6,7 +6,7 @@ var CURRENT_URL_2 = "localhost"
 
 var TEST_AUTH = "hwb:hwb"
 
-var DEBUG = true
+var DEBUG = false
 
 
 function setCookie(cname, cvalue, exdays = 0) {
