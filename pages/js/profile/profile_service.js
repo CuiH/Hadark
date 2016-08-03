@@ -152,7 +152,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
-				deferred.reject(response.data["detail"])
+				deferred.reject(response.data)
 			})
 
 			return promise
@@ -181,7 +181,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
-				deferred.reject(response.data["detail"])
+				deferred.reject(response.data)
 			})
 
 			return promise
@@ -246,7 +246,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
-				deferred.reject(response.data["detail"])
+				deferred.reject(response.data)
 			})
 
 			return promise
@@ -272,7 +272,7 @@ profile.factory("profileService", ["$http", "$q", function($http, $q) {
 			}).then(function successCallback(response) {
 				deferred.resolve(response.data)
 			}, function errorCallback(response) {
-				deferred.reject(response.data["detail"])
+				deferred.reject(response.data)
 			})
 
 			return promise
