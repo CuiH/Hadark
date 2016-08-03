@@ -2,5 +2,21 @@
 	display: none;
 }
 #mainContent {
-	padding-top: 75px;
+	padding-top: 12%;
+}
+body {
+	background-image: url(../../images/back.png);
+}
+.ui.items > .item > .content > .description {
+	font-size: 1.5rem;
+}
+#gg{
+	background-color: rgba(221, 234, 251, 0.7);
+	border-radius: 70px;
+		padding-top: 50px;
+	padding-bottom: 50px;
+}
+.downpic {
+	max-width: 112px;
+	max-height: 120px;
 }
