@@ -43,13 +43,11 @@ body {
 }
 
 #mainContent {
-	margin-top: 75px;
-	margin-bottom: 75px;
+	padding-top: 5%;
 }
 
 #footer {
 	background-color: rgba(120, 173, 239, 0.4);
-	height: 100px;
 }
 
 #top {
