@@ -20,3 +20,14 @@ body {
 	max-width: 112px;
 	max-height: 120px;
 }
+@media only screen and (max-width: 1919px) and (min-width: 1200px) {
+	.ui.page.grid {
+		padding-left: 3%;
+	    padding-right: 3%;
+	}
+}@media only screen and (max-width: 1919px) and (min-width: 1600px) {
+	.ui.page.grid {
+		padding-left: 15%;
+	    padding-right: 15%;
+	}
+}
