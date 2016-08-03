@@ -25,13 +25,13 @@ window.onload = function() {
           $("#logIn").modal('show');
       else
           //跳转主页面
-        window.location.href = "http://" + CURRENT_URL_2 + "/profile";
+        window.location.href = "http://" + CURRENT_URL_2 + "/profile.html";
   });
   $("#feature").click(function() {
-      window.location.href = "http://" + CURRENT_URL_2 + "/feature";
+      window.location.href = "http://" + CURRENT_URL_2 + "/feature.html";
   });
   $("#help").click(function() {
-      window.location.href = "http://" + CURRENT_URL_2 + "/help";
+      window.location.href = "http://" + CURRENT_URL_2 + "/help.html";
   });
   $('#loginForm').form({
       on: 'blur',

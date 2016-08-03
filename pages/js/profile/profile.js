@@ -3,23 +3,23 @@ $(document).ready(function() {
 	$("#mainContent").css("min-height", height + "px")
 
 	$("#feature").click(function() {
-		window.location.href = "http://" + CURRENT_URL_2 + "/feature"
+		window.location.href = "http://" + CURRENT_URL_2 + "/feature.html"
 	})
 
 	$("#help").click(function() {
-		window.location.href = "http://" + CURRENT_URL_2 + "/help";
+		window.location.href = "http://" + CURRENT_URL_2 + "/help.html";
 	})
 
 	$("#logOut").click(function() {
 		clearCookie("username")
 		clearCookie("password")
-		window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true"
+		window.location.href = "http://" + CURRENT_URL_2 + "/homepage.html?login=true"
 	})
 
 	// check login
 	if (!DEBUG) {
 		if (getCookie("username") == null) {
-			window.location.href = "http://" + CURRENT_URL_2 + "/homepage?login=true"
+			window.location.href = "http://" + CURRENT_URL_2 + "/homepage.html?login=true"
 		} else {
 			$("#userName").text(getCookie("username"))
 		}

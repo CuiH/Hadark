@@ -13,21 +13,16 @@ body {
 #gg{
 	background-color: rgba(221, 234, 251, 0.7);
 	border-radius: 70px;
-		padding-top: 50px;
+	padding-top: 50px;
 	padding-bottom: 50px;
 }
 .downpic {
 	max-width: 112px;
 	max-height: 120px;
 }
-@media only screen and (max-width: 1919px) and (min-width: 1200px) {
+@media only screen and (max-width: 1600px) and (min-width: 1200px) {
 	.ui.page.grid {
 		padding-left: 3%;
 	    padding-right: 3%;
-	}
-}@media only screen and (max-width: 1919px) and (min-width: 1600px) {
-	.ui.page.grid {
-		padding-left: 15%;
-	    padding-right: 15%;
 	}
 }
