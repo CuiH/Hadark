@@ -53,6 +53,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 
 		$("#job_detail_modal").modal("show")
 
+		self.viewing_job = null
+
 		profileService.getJobById(job_id)
 			.then(
 				function(data) {
@@ -219,6 +221,9 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 		$("#detail_modal_loader_2").addClass("active")
 
 		$("#file_detail_modal").modal("show")
+
+		self.viewing_file  = null
+		self.viewing_file_content = ""
 
 		profileService.getFileById(file_id)
 			.then(
