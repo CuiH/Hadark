@@ -6,7 +6,7 @@ window.onload = function() {
 		history.back(-1);
 	});
 	$("#feature").click(function() {
-		window.location.href = "http://" + CURRENT_URL_2 + "/feature";
+		window.location.href = "http://" + CURRENT_URL_2 + "/feature.html";
 	});
 	var height = window.innerHeight - $("#main").offset().top;
 	var height2 = $("#top").height();
