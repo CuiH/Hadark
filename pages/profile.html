@@ -149,7 +149,7 @@
 	</div>
 
 	<div id="document_upload_form_modal"class="ui small test modal">
-		<div class="header">Upload a Document</div>
+		<div id="document_upload_form_title"class="header">Upload a Document</div>
 		<div class="content">
 			<form id="document_upload_form" class="ui form">
 				<div class="field" id="document_upload_file_div">
@@ -316,7 +316,9 @@
 			<div class="ui teal horizontal label">Path</div>
 			<span ng-bind="ctrl.viewing_file.hdfs_path"></span>
 			<div class="ui divider"></div>
-			<div class="ui teal horizontal label">Content</div> <br/>
+			<div class="ui teal horizontal label">Content</div> <br/><br/>
+			<div id="file_content_get" ng-click="ctrl.getFileContent(ctrl.viewing_file.hdfs_path)" class="ui positive button">GET</div>
+			<p id="file_content_loader" style="display: none;">loading...</p>
 			<pre style="margin-top: 10px; margin-left: 6px;" ng-bind-html='ctrl.viewing_file_content | trustHtml'></pre>
 		</div>
 		<div class="actions">

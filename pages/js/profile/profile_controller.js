@@ -219,8 +219,8 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 
 	self.getFile = function(file_id, file_path) {
 		$("#detail_modal_loader_2").addClass("active")
-
 		$("#file_detail_modal").modal("show")
+		$("#file_content_get").css("display", "")
 
 		self.viewing_file  = null
 		self.viewing_file_content = ""
@@ -233,14 +233,10 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 					if (data["size"] > 10000000) {
 						self.viewing_file_content = "The file is too large, so it won't be shown."
 
-						$("#detail_modal_loader_2").removeClass('active')
-						
-						setTimeout('$("#file_detail_modal").modal("refresh")', 0)
-
-						return
+						$("#file_content_get").css("display", "none")
 					}
 
-					self.getFileContent(file_path)
+					$("#detail_modal_loader_2").removeClass('active')
 				},
 				function(error) {
 					alterResultModal("Fail", error)
@@ -249,12 +245,16 @@ profile.controller("profileController", ['$scope', 'profileService', function($s
 	}
 
 	self.getFileContent = function(file_path) {
+		$("#file_content_loader").css("display", "")
+		$("#file_content_get").css("display", "none")
+
 		profileService.getFileContent(file_path)
 			.then(
 				function(data) {
-					self.viewing_file_content = data
+					$("#file_content_loader").css("display", "none")
+					$("#file_content_get").css("display", "none")
 
-					$("#detail_modal_loader_2").removeClass('active')
+					self.viewing_file_content = data
 					
 					setTimeout('$("#file_detail_modal").modal("refresh")', 0)
 				},
