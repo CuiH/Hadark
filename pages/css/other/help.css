@@ -10,9 +10,10 @@
 body {
 	background-color: rgb(221, 234, 251);
 }
-.ui.inverted.menu .item, .ui.inverted.menu .item > a:not(.ui) {
+
+.ui.vertical.inverted.menu .menu .item, .ui.vertical.inverted.menu .menu .item a:not(.ui) {
 	color: black;
 }
-.ui.vertical.inverted.menu .menu .item, .ui.vertical.inverted.menu .menu .item a:not(.ui) {
+.tocmenu {
 	color: black;
 }

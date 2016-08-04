@@ -64,4 +64,10 @@ $(document).ready(function() {
 	$("#document_upload_file").change(function() {
 		$("#document_upload_name").val(getFileName($(this).val()))
 	})
+	$(".tohome").click(function() {
+      window.location.href = "http://" + CURRENT_URL_2 + "/homepage.html";
+  });
+	$("#userName").click(function() {
+      window.location.href = "http://" + CURRENT_URL_2 + "/profile.html";
+  });
 })
