@@ -17,3 +17,6 @@ body {
 .tocmenu {
 	color: black;
 }
+#top {
+	font-weight: bolder;
+}
