@@ -16,6 +16,9 @@ window.onload = function() {
     $("#mainContent").offset({left:left1});
     $("#main").css("max-height", "");
     if (window.innerHeight < (850 + height2) ) {
+    	$("#toc").css("font-size", "1.2rem");
+    }
+    if (window.innerHeight < (602 + height2) ) {
     	$("#toc").css("font-size", "1rem");
     }
 }
