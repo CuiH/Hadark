@@ -17,6 +17,8 @@ mysql> create database hadark;
 python manage.py migrate
 mysql> insert into file(name, file_type, permission) values("/", "directory", "none");
 mysql> insert into file(name, file_type, permission, parent_id) values("user", "directory", "none", 1);  -- the parent_id should be the id of the above item
+```
+
 ---
 
 ### run:
