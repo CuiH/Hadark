@@ -12,17 +12,14 @@ pip install PyMysql
 ---
 
 ### pre works
-1. add a File object values(name="/", file_type="directory", parent="None")
-2. add a File object values(name="user", file_type="directory") and its parent should be the above one
-
+```
+mysql> create database hadark;
+python manage.py migrate
+mysql> insert into file(name, file_type, permission) values("/", "directory", "none");
+mysql> insert into file(name, file_type, permission, parent_id) values("user", "directory", "none", 1);  -- the parent_id should be the id of the above item
 ---
 
 ### run:
 ```
-python manage.py migrate
 python manage.py runserver
 ``` 
-
----
-
-P.S. pages should be transmitted through nginx, not django
