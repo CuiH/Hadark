@@ -2,7 +2,7 @@
 var CURRENT_URL = "172.18.231.84"
 
 // static
-var CURRENT_URL_2 = "localhost"
+var CURRENT_URL_2 = "172.18.231.84"
 
 var TEST_AUTH = "hwb:hwb"
 

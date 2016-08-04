@@ -33,6 +33,7 @@ $(document).ready(function() {
 
 	// show the upload_document modal
 	$("#upload_document").click(function() {
+		$("#document_upload_form_title").text("Upload a Document")
 		$("#document_upload_file_div").removeAttr("hidden")
 		$("#document_upload_type").val("FILE")
 		$("#document_upload_name").val("")
@@ -43,6 +44,7 @@ $(document).ready(function() {
 	})
 
 	$("#create_folder").click(function() {
+		$("#document_upload_form_title").text("Create a Folder")
 		$("#document_upload_type").val("DIR")
 		$("#document_upload_file").val("")
 		$("#document_upload_name").val("")
