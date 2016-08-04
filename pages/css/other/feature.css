@@ -1,9 +1,6 @@
 #name-nav {
 	display: none;
 }
-#mainContent {
-	padding-top: 12%;
-}
 body {
 	background-image: url(../../images/back.png);
 }
@@ -25,4 +22,14 @@ body {
 		padding-left: 3%;
 	    padding-right: 3%;
 	}
+}
+@media only screen and (max-width: 1920px) and (min-width: 1600px) {
+	.ui.page.grid {
+		padding-left: 15%;
+	    padding-right: 15%;
+	}
+}
+#maincontent {
+	margin-top: 10%;
+	margin-bottom: 10%;
 }

@@ -20,12 +20,18 @@ window.onload = function() {
       $("#name-nav").hide();
       $("#main-nav").show();
   });
+  $("#userName").click(function() {
+      window.location.href = "http://" + CURRENT_URL_2 + "/profile.html";
+  });
   $("#getStart").click(function() {
       if (getCookie("username") == null)
           $("#logIn").modal('show');
       else
           //跳转主页面
         window.location.href = "http://" + CURRENT_URL_2 + "/profile.html";
+  });
+  $(".tohome").click(function() {
+      window.location.href = "http://" + CURRENT_URL_2 + "/homepage.html";
   });
   $("#feature").click(function() {
       window.location.href = "http://" + CURRENT_URL_2 + "/feature.html";
