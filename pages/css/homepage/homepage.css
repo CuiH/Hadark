@@ -37,3 +37,6 @@ h1.ui.header .sub.header {
 .buttonloader {
 	display: none;
 }
+.ui.menu {
+    font-size: 1.4rem;
+}

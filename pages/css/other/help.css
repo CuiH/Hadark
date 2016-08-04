@@ -17,3 +17,15 @@ body {
 .tocmenu {
 	color: black;
 }
+#top {
+	font-weight: bolder;
+}
+#mainContent {
+    padding-top: 0;
+}
+.ten.wide.column > div {
+	margin-bottom: 50px;
+}
+.jobbox {
+	text-align: center;
+}
